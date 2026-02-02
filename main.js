@@ -288,14 +288,20 @@ function generateCalendar() {
         if (dateObj.toDateString() === TODAY.toDateString()) cell.classList.add('today-highlight');
         
         cell.innerHTML = `<div class="date-num">${d}</div><div class="pasaran-text">${p}</div>`;
-        cell.onclick = () => {
-            document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
-            cell.classList.add('selected-day');
-            updateDetail(dateObj, p);
-        };
-        grid.appendChild(cell);
+       cell.onclick = () => {
+    // Ambil token dari memori HP user
+    const savedToken = localStorage.getItem('kalender_token_tius');
+    
+    if (checkTokenLogic(savedToken)) {
+        // Jika token valid, jalankan fungsi normal
+        document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
+        cell.classList.add('selected-day');
+        updateDetail(dateObj, p);
+    } else {
+        // Jika token tidak ada/salah, munculkan popup
+        showTokenModal();
     }
-}
+};
 
 function updateDetail(date, pasaran) {
     const detailDiv = document.getElementById('detail');
