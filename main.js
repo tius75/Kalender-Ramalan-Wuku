@@ -489,104 +489,78 @@ function getLunarShio(date) {
         const m = date.getMonth() + 1;
         const d = date.getDate();
         
-        // Cari tanggal Imlek tahun ini
-        let imlekThisYear = null;
+        let imlekM, imlekD, shioTahunIni;
+        
+        // Cari data Imlek tahun ini
         if (DB_IMLEK && DB_IMLEK[y]) {
-            imlekThisYear = new Date(y, DB_IMLEK[y].m - 1, DB_IMLEK[y].d);
+            imlekM = DB_IMLEK[y].m;
+            imlekD = DB_IMLEK[y].d;
+            shioTahunIni = DB_IMLEK[y].shio;
         } else {
-            // Fallback: perkiraan tanggal Imlek (biasanya Jan-Feb)
-            imlekThisYear = new Date(y, 1, 5); // 5 Februari
+            // Fallback jika data tidak ada
+            const shios = ["Monyet", "Ayam", "Anjing", "Babi", "Tikus", "Kerbau", "Macan", "Kelinci", "Naga", "Ular", "Kuda", "Kambing"];
+            shioTahunIni = shios[y % 12];
+            imlekM = 2; imlekD = 5; // Perkiraan tanggal Imlek
         }
+
+        const tglImlek = new Date(y, imlekM - 1, imlekD);
+        const isSudahImlek = date >= tglImlek;
+
+        // Hitung tahun Imlek yang benar
+        // Tahun Imlek = 2026 + 2698 = 4724 (contoh)
+        // Tapi lebih akurat: 2026 + 2697 = 4723 (karena dimulai dari 2697 SM)
+        const tahunImlek = isSudahImlek ? y + 2697 : y + 2696;
         
-        // Cari tanggal Imlek tahun lalu
-        let imlekLastYear = null;
-        if (DB_IMLEK && DB_IMLEK[y-1]) {
-            imlekLastYear = new Date(y-1, DB_IMLEK[y-1].m - 1, DB_IMLEK[y-1].d);
+        // Hitung bulan Imlek
+        const diffTime = Math.abs(date - tglImlek);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        let lunarDay, lunarMonth;
+        
+        if (isSudahImlek) {
+            // Sudah lewat Imlek tahun ini
+            lunarDay = (diffDays % 30) + 1;
+            lunarMonth = Math.floor(diffDays / 30) + 1;
         } else {
-            imlekLastYear = new Date(y-1, 1, 5);
+            // Sebelum Imlek tahun ini, masih tahun Imlek sebelumnya
+            const daysBeforeImlek = Math.floor((tglImlek - date) / (1000 * 60 * 60 * 24));
+            lunarDay = 30 - (daysBeforeImlek % 30);
+            lunarMonth = 12 - Math.floor(daysBeforeImlek / 30);
+            
+            // Jika bulan 0, berarti bulan 12
+            if (lunarMonth === 0) lunarMonth = 12;
         }
         
-        // Tentukan apakah sudah lewat Imlek tahun ini
-        const isAfterImlekThisYear = date >= imlekThisYear;
+        if (lunarDay < 1) lunarDay = 1;
+        if (lunarDay > 30) lunarDay = 30;
+        if (lunarMonth < 1) lunarMonth = 1;
+        if (lunarMonth > 12) lunarMonth = 12;
         
-        let lunarDate, lunarMonth, lunarYear, shio;
-        
-        if (isAfterImlekThisYear) {
-            // Sudah lewat Imlek tahun ini -> tahun Imlek = tahun Masehi + 2697
-            lunarYear = y + 2697;
-            
-            // Hitung hari sejak Imlek
-            const diffMs = date - imlekThisYear;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            
-            // Hitung bulan Imlek (1-12)
-            lunarMonth = Math.floor(diffDays / 29.53) + 1;
-            if (lunarMonth > 12) lunarMonth = 12;
-            if (lunarMonth < 1) lunarMonth = 1;
-            
-            // Hitung tanggal Imlek (1-30)
-            lunarDate = (diffDays % 30) + 1;
-            
-            // Shio tahun ini
-            shio = DB_IMLEK[y] ? DB_IMLEK[y].shio : getShioByYear(y);
+        // Tentukan shio yang benar
+        let shioFinal;
+        if (isSudahImlek) {
+            shioFinal = shioTahunIni;
         } else {
-            // Sebelum Imlek tahun ini -> masih tahun Imlek sebelumnya
-            lunarYear = y + 2696;
-            
-            // Hitung hari sebelum Imlek tahun ini
-            const diffMs = imlekThisYear - date;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            
-            // Hitung bulan Imlek (mundur dari 12)
-            lunarMonth = 12 - Math.floor(diffDays / 29.53);
-            if (lunarMonth < 1) lunarMonth = 1;
-            
-            // Hitung tanggal Imlek
-            lunarDate = 30 - (diffDays % 30);
-            if (lunarDate < 1) lunarDate = 1;
-            if (lunarDate > 30) lunarDate = 30;
-            
-            // Shio tahun lalu
-            shio = DB_IMLEK[y-1] ? DB_IMLEK[y-1].shio : getShioByYear(y-1);
+            // Jika sebelum Imlek, gunakan shio tahun sebelumnya
+            if (DB_IMLEK && DB_IMLEK[y-1]) {
+                shioFinal = DB_IMLEK[y-1].shio;
+            } else {
+                const shios = ["Monyet", "Ayam", "Anjing", "Babi", "Tikus", "Kerbau", "Macan", "Kelinci", "Naga", "Ular", "Kuda", "Kambing"];
+                shioFinal = shios[(y-1) % 12];
+            }
         }
-        
-        // Fungsi helper untuk mendapatkan shio berdasarkan tahun
-        function getShioByYear(year) {
-            const shios = ["Tikus", "Kerbau", "Macan", "Kelinci", "Naga", "Ular", "Kuda", "Kambing", "Monyet", "Ayam", "Anjing", "Babi"];
-            // Tahun Tikus: 2020, 2032, etc (berulang setiap 12 tahun)
-            const baseYear = 2020; // Tahun Tikus
-            const index = (year - baseYear) % 12;
-            return shios[index >= 0 ? index : index + 12];
-        }
-        
-        // Berikan ramalan berdasarkan shio
-        const ramalanShio = {
-            "Tikus": "Tahun yang baik untuk memulai hal baru dan investasi.",
-            "Kerbau": "Tahun ketekunan dan kerja keras akan membuahkan hasil.",
-            "Macan": "Tahun keberanian dan petualangan, tetapi perlu kehati-hatian.",
-            "Kelinci": "Tahun kedamaian dan hubungan harmonis.",
-            "Naga": "Tahun energi kuat untuk kesuksesan dan kekuasaan.",
-            "Ular": "Tahun kebijaksanaan dan transformasi.",
-            "Kuda": "Tahun kebebasan dan perjalanan.",
-            "Kambing": "Tahun kreativitas dan keluarga.",
-            "Monyet": "Tahun kecerdikan dan inovasi.",
-            "Ayam": "Tahun ketelitian dan perhatian pada detail.",
-            "Anjing": "Tahun kesetiaan dan perlindungan.",
-            "Babi": "Tahun kemakmuran dan keberuntungan."
-        };
 
         return {
-            full: `${lunarDate} - ${lunarMonth} - ${lunarYear}`,
-            shio: shio,
-            ramalan: ramalanShio[shio] || "Gunakan energi hari ini dengan bijaksana."
+            full: `${lunarDay} - ${lunarMonth} - ${tahunImlek}`,
+            shio: shioFinal,
+            ramalan: "Gunakan energi hari ini dengan bijaksana."
         };
     } catch (error) {
         console.error("Error in getLunarShio:", error);
-        // Fallback untuk tahun 2026
         return {
-            full: "17 - 1 - 4723", // 17 Februari 2026 = 1 bulan 1 tahun 4723
+            full: "1 - 1 - 4723",
             shio: "Kuda",
-            ramalan: "Tahun Kuda membawa energi kebebasan dan perjalanan."
+            ramalan: "Data lunar sedang diproses."
         };
     }
 }
