@@ -1,0 +1,305 @@
+/* ==========================================
+   VARIABLE & BASE
+   ========================================== */
+:root {
+  --primary: #D30000;
+  --primary-soft: #fff5f5;
+  --dark: #2d3436;
+  --white: #ffffff;
+  --shadow: 0 10px 25px rgba(0,0,0,0.1);
+  --sunday-bg: #fff0f0;
+}
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f4f7f6;
+  padding: 10px;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   LAYOUT CONTAINER
+   ========================================== */
+#mainApp {
+  max-width: 450px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden; /* Tetap hidden di layar, tapi visible di print */
+}
+
+/* Header Area */
+.filter-container {
+  background: linear-gradient(135deg, #d30000 0%, #8b0000 100%);
+  color: white;
+  padding: 25px 15px;
+  text-align: center;
+}
+
+.search-box {
+  margin-top: 15px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.search-box input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 150px;
+  font-size: 0.9rem;
+}
+
+.search-box button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background: var(--dark);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-box button:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   CALENDAR NAVIGATION
+   ========================================== */
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.calendar-nav h3 {
+  font-size: 1.1rem;
+  color: var(--dark);
+}
+
+.calendar-nav button {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================
+   GRID KALENDER
+   ========================================== */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 15px;
+}
+
+.header-day {
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: #888;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.calendar-day {
+  aspect-ratio: 1 / 1.1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+}
+
+.calendar-day:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-soft);
+}
+
+.date-num {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.pasaran-text {
+  font-size: 0.65rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* --- LOGIKA WARNA MINGGU --- */
+.sunday-red {
+    color: var(--primary) !important;
+}
+
+.calendar-day.sunday-red {
+    background-color: var(--sunday-bg) !important;
+}
+
+.calendar-day.sunday-red .date-num,
+.calendar-day.sunday-red .pasaran-text {
+    color: var(--primary) !important;
+}
+
+/* Penanda Hari Ini */
+.today-highlight {
+    background-color: #fff9c4 !important; /* Kuning soft */
+    border: 2px solid #fbc02d !important;
+}
+
+/* Hari Terpilih */
+.selected-day {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+.selected-day .date-num, .selected-day .pasaran-text {
+    color: white !important;
+}
+
+/* ==========================================
+   DETAIL RESULTS
+   ========================================== */
+.detail-container {
+  padding: 20px;
+  border-top: 8px solid var(--primary-soft);
+}
+
+#detail {
+    background: white;
+}
+
+.card-result {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+/* Styling Tabel di Detail */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 0.8rem;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* ==========================================
+   AKSI (PDF & WA)
+   ========================================== */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px 20px 20px;
+}
+
+.btn-pdf, .btn-wa {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-pdf { background-color: #3d3d3d; }
+.btn-wa { background-color: #25D366; }
+
+/* =========================
+   MODE KHUSUS PDF (AMAN)
+========================= */
+
+#printableArea.pdf-mode {
+    width: 794px !important;
+    max-width: 794px !important;
+    background: #fff !important;
+    color: #000 !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+}
+
+/* HANYA CHILD LANGSUNG */
+#printableArea.pdf-mode > div,
+#printableArea.pdf-mode section,
+#printableArea.pdf-mode article {
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+/* DETAIL */
+#printableArea.pdf-mode .show-detail {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+/* CARD / BOX */
+#printableArea.pdf-mode .card,
+#printableArea.pdf-mode .box,
+#printableArea.pdf-mode .panel {
+    box-shadow: none !important;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+/* FLEX & GRID → BLOCK */
+#printableArea.pdf-mode .row,
+#printableArea.pdf-mode .flex,
+#printableArea.pdf-mode .grid {
+    display: block !important;
+}
+
+/* TABEL */
+#printableArea.pdf-mode table {
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+#printableArea.pdf-mode td,
+#printableArea.pdf-mode th {
+    word-break: break-word;
+    font-size: 12px;
+}
+

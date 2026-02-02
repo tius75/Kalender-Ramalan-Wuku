@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+ <head>
+    <meta charset="UTF-8">
+    <title>Kalender Kitab Mantra</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QWSSTDE64P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QWSSTDE64P');
+    </script>
+
+    <script src="data-imlek.js"></script>
+    <script src="main.js"></script>
+</head>
+
+
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kalender Jawa & Imlek Abadi</title>
+   <link rel="manifest" href="manifest.json">
+ 
+    <meta name="theme-color" content="#D30000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <style>
+        :root { --primary: #D30000; --bg: #f4f4f4; --imlek: #cf1322; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 10px; }
+        #mainApp { max-width: 500px; margin: auto; background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        .header-section { text-align: center; margin-bottom: 20px; }
+        .search-box { display: flex; gap: 5px; margin-bottom: 20px; }
+        .search-box input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .search-box button { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .calendar-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .calendar-nav button { background: none; border: 1px solid #ddd; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .header-day { font-weight: bold; font-size: 11px; padding: 5px 0; color: #666; text-transform: uppercase; }
+        
+        .sunday-red { color: red !important; }
+        
+        .calendar-day { border: 1px solid #eee; padding: 8px 2px; border-radius: 8px; cursor: pointer; font-size: 14px; min-height: 55px; transition: 0.2s; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .calendar-day:hover { border-color: var(--primary); background: #fff5f5; }
+        .today-highlight { background: #fff0f0; border: 2px solid var(--primary); }
+        .selected-day { background: #fff9c4 !important; border: 2px solid #fbc02d !important; }
+
+        .date-num { font-weight: bold; font-size: 1.1rem; }
+        .pasaran-text { font-size: 9px; color: #555; margin-top: 2px; }
+        .imlek-num { position: absolute; bottom: 2px; right: 4px; font-size: 9px; color: var(--imlek); font-weight: bold; }
+
+        #detail { margin-top: 20px; border-top: 2px solid #eee; padding-top: 15px; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; justify-content: center; padding-bottom: 20px; }
+        .btn-wa { background: #25D366; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; }
+
+        /* Card styles for detail */
+        .card-result { line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div id="mainApp">
+    <div class="header-section">
+        <h1 style="margin:0; font-size: 22px; color: var(--primary);">Kalender Abadi</h1>
+        <p style="margin:5px 0; font-size: 13px; color: #888;">Jawa • Masehi • Imlek</p>
+    </div>
+
+    <div class="search-box">
+        <input type="date" id="dateInput">
+        <button onclick="searchWeton()">Cari</button>
+    </div>
+
+    <div class="calendar-nav">
+        <button id="prevMonth">◀</button>
+        <h3 id="monthYearNav">Januari 2026</h3>
+        <button id="nextMonth">▶</button>
+    </div>
+
+    <div id="calendar" class="calendar-grid"></div>
+
+    <div id="detail">
+        <div id="printableArea">
+            </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="btn-wa" onclick="shareWhatsApp()">📱 Bagikan ke WhatsApp</button>
+    </div>
+
+    <footer style="text-align:center; font-size:11px; color:#aaa; margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
+        &copy; 2026 Kalender Multi-Budaya • By Tius
+    </footer>
+</div>
+
+<script src="data-srijati.js"></script>
+<script src="data-wuku.js"></script>
+<script src="data-mangsa.js"></script>
+<script src="data-hari.js"></script>
+<script src="data-imlek.js"></script>
+<script src="data-neptu.js"></script>
+<script src="data-astrologi.js"></script>
+
+<script src="main.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker terdaftar!', reg))
+        .catch(err => console.log('Pendaftaran gagal:', err));
+    });
+  }
+</script>
+
+
+</body>
+</html>
