@@ -1313,3 +1313,212 @@ document.addEventListener("DOMContentLoaded", () => {
         generateCalendar(); 
     };
 });
+
+// Tambahkan kode berikut di main.js Anda:
+
+// ==========================================
+// SISTEM TOKEN - MENGIMPOR DARI ADMIN
+// ==========================================
+
+// Load token database dari localStorage admin
+function loadTokenDatabase() {
+    try {
+        const adminDatabase = localStorage.getItem('kalender_token_database');
+        if (adminDatabase) {
+            const tokens = JSON.parse(adminDatabase);
+            
+            // Convert ke format yang kompatibel dengan DAFTAR_TOKEN_AKTIF
+            const convertedTokens = {};
+            
+            for (const [token, data] of Object.entries(tokens)) {
+                convertedTokens[token] = {
+                    expiry: data.expiry,
+                    package: data.package,
+                    created: data.created
+                };
+            }
+            
+            // Gabungkan dengan token default
+            return {
+                ...convertedTokens,
+                "DEMO123": { expiry: "2026-03-01", package: "1 Bulan", created: "2026-02-01" },
+                "TIUS2026": { expiry: "2026-12-31", package: "1 Tahun", created: "2026-01-01" }
+            };
+        }
+    } catch (error) {
+        console.error("Error loading token database:", error);
+    }
+    
+    // Fallback ke token default
+    return {
+        "DEMO123": { expiry: "2026-03-01", package: "1 Bulan", created: "2026-02-01" },
+        "TIUS2026": { expiry: "2026-12-31", package: "1 Tahun", created: "2026-01-01" },
+        "VIP999": { expiry: "9999-12-31", package: "Unlimited", created: "2026-01-15" }
+    };
+}
+
+// Update DAFTAR_TOKEN_AKTIF untuk menggunakan database dari admin
+const DAFTAR_TOKEN_AKTIF = loadTokenDatabase();
+
+// ==========================================
+// MODAL TOKEN - UPDATE LINK KE ADMIN
+// ==========================================
+
+function showTokenModal() {
+    const modalHTML = `
+        <div id="tokenModal" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        ">
+            <div style="
+                background: white;
+                padding: 30px;
+                border-radius: 15px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            ">
+                <h2 style="color: #D30000; margin-top: 0;">🔑 Akses Premium Kalender Jawa</h2>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="margin-top: 0;">💰 Pilihan Paket:</h3>
+                    
+                    <div style="display: grid; gap: 10px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>1 Bulan</span>
+                            <span style="color: #4CAF50; font-weight: bold;">Rp 25.000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>3 Bulan (Hemat 20%)</span>
+                            <span style="color: #2196F3; font-weight: bold;">Rp 60.000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>1 Tahun (Hemat 50%)</span>
+                            <span style="color: #9C27B0; font-weight: bold;">Rp 150.000</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px; border: 2px solid gold;">
+                            <span style="font-weight: bold;">👑 Unlimited</span>
+                            <span style="color: gold; font-weight: bold;">Rp 500.000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Input Token -->
+                <div style="margin: 20px 0;">
+                    <h4>Sudah punya token?</h4>
+                    <input type="text" 
+                           id="tokenInput" 
+                           placeholder="Masukkan token Anda di sini" 
+                           style="
+                               width: 100%;
+                               padding: 15px;
+                               margin: 10px 0;
+                               border: 2px solid #ddd;
+                               border-radius: 8px;
+                               font-size: 16px;
+                           ">
+                </div>
+                
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; margin: 20px 0;">
+                    <button onclick="submitToken()" style="
+                        flex: 1;
+                        background: #4CAF50;
+                        color: white;
+                        border: none;
+                        padding: 15px;
+                        border-radius: 8px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    ">✅ Gunakan Token</button>
+                    
+                    <button onclick="closeTokenModal()" style="
+                        flex: 1;
+                        background: #666;
+                        color: white;
+                        border: none;
+                        padding: 15px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                    ">❌ Batal</button>
+                </div>
+                
+                <!-- Contact Admin -->
+                <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border-left: 5px solid #ffc107;">
+                    <h4 style="margin-top: 0;">📞 Cara Mendapatkan Token:</h4>
+                    <p>Hubungi admin untuk pembelian token:</p>
+                    
+                    <div style="display: grid; gap: 10px; margin-top: 15px;">
+                        <a href="https://wa.me/6281234567890?text=Halo%20admin,%20saya%20ingin%20membeli%20token%20Kalender%20Jawa" 
+                           target="_blank"
+                           style="
+                               display: block;
+                               background: #25D366;
+                               color: white;
+                               text-align: center;
+                               padding: 12px;
+                               border-radius: 8px;
+                               text-decoration: none;
+                               font-weight: bold;
+                           ">
+                            📱 WhatsApp Admin
+                        </a>
+                        
+                        <a href="admin.html" 
+                           target="_blank"
+                           style="
+                               display: block;
+                               background: #D30000;
+                               color: white;
+                               text-align: center;
+                               padding: 12px;
+                               border-radius: 8px;
+                               text-decoration: none;
+                               font-weight: bold;
+                           ">
+                            🛠️ Halaman Admin (Untuk Pembuat Token)
+                        </a>
+                    </div>
+                    
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                        <strong>Token demo:</strong> <code>DEMO123</code> (berlaku hingga 1 Maret 2026)
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.getElementById('tokenInput').focus();
+}
+
+// Update checkTokenLogic untuk membaca dari database admin
+function checkTokenLogic(token) {
+    if (!token) return false;
+
+    const tokenData = DAFTAR_TOKEN_AKTIF[token];
+    
+    if (!tokenData) {
+        // Coba load ulang database dari localStorage
+        const refreshedTokens = loadTokenDatabase();
+        if (refreshedTokens[token]) {
+            DAFTAR_TOKEN_AKTIF[token] = refreshedTokens[token];
+            return checkTokenLogic(token); // Cek ulang
+        }
+        return false;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiryDate = new Date(tokenData.expiry);
+
+    return today <= expiryDate;
+}
