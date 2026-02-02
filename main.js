@@ -503,10 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function shareWhatsApp() {
-    const text = document.getElementById('printableArea').innerText;
-    window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank");
-}
+
 
 // ==========================================
 // RENDER UI KALENDER (FIXED)
@@ -610,8 +607,9 @@ function showTokenModal() {
         location.reload(); 
     } else {
         alert("Token SALAH atau sudah EXPIRED!\nSilakan hubungi admin untuk pembelian token baru.");
-    
+    }   
 }
+
 // ==========================================
 // INITIAL START
 // ==========================================
