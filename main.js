@@ -517,6 +517,7 @@ function generateCalendar() {
     const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     mNav.innerText = `${namaBulan[m]} ${y}`;
 
+    // Header Hari
     HARI.forEach((h, i) => {
         const el = document.createElement('div');
         el.innerText = h.substring(0, 3);
@@ -527,8 +528,10 @@ function generateCalendar() {
     const firstDay = new Date(y, m, 1).getDay();
     const daysInMonth = new Date(y, m + 1, 0).getDate();
 
+    // Padding awal bulan
     for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
+    // Render Tanggal
     for (let d = 1; d <= daysInMonth; d++) {
         const dateObj = new Date(y, m, d);
         const p = getPasaran(dateObj);
@@ -540,7 +543,7 @@ function generateCalendar() {
         
         cell.innerHTML = `<div class="date-num">${d}</div><div class="pasaran-text">${p}</div>`;
         
-        // FUNGSI ONCLICK DENGAN SISTEM TOKEN
+        // FUNGSI KLIK TANGGAL
         cell.onclick = () => {
             const savedToken = localStorage.getItem('kalender_token_tius');
             
@@ -557,31 +560,45 @@ function generateCalendar() {
 }
 
 // ==========================================
-// LOGIKA TOKEN (TAMBAHKAN INI AGAR TIDAK ERROR)
+// LOGIKA TOKEN (FIXED)
 // ==========================================
-
-// Fungsi untuk mengecek token secara dinamis
 function checkTokenLogic(token) {
-    // Mengambil token yang sah dari localStorage (yang diset oleh admin)
-    const tokenSah = localStorage.getItem('token_aktif_tius');
-    
-    // Jika admin belum buat token, kasih token default 'TIUS2026'
-    if (!tokenSah) {
-        return token === "TIUS2026";
-    }
-    
+    // Ambil token sah yang diset admin, jika tidak ada pakai default TIUS2026
+    const tokenSah = localStorage.getItem('token_aktif_tius') || "TIUS2026";
     return token === tokenSah;
 }
 
 function showTokenModal() {
-    const userInput = prompt("Masukkan Token Akses:");
-    if (userInput === null) return; // Jika user klik cancel
+    const userInput = prompt("Masukkan Token Akses untuk melihat detail:");
+    if (userInput === null) return; 
 
     if (checkTokenLogic(userInput)) {
         localStorage.setItem('kalender_token_tius', userInput);
         alert("Token Berhasil! Silakan klik tanggal kembali.");
-        location.reload();
+        location.reload(); // Refresh agar status klik terbuka
     } else {
-        alert("Token Salah atau Dibatalkan!");
+        alert("Token Salah! Silakan hubungi admin.");
     }
 }
+
+// ==========================================
+// INITIAL START
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    generateCalendar();
+    
+    // Pastikan updateDetail pertama kali tidak error
+    updateDetail(TODAY, getPasaran(TODAY));
+
+    const prev = document.getElementById('prevMonth');
+    const next = document.getElementById('nextMonth');
+    
+    if(prev) prev.onclick = () => { 
+        current.setMonth(current.getMonth() - 1); 
+        generateCalendar(); 
+    };
+    if(next) next.onclick = () => { 
+        current.setMonth(current.getMonth() + 1); 
+        generateCalendar(); 
+    };
+});
