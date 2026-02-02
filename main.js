@@ -3,6 +3,13 @@
  * Update: Windu Sancaya, Tahun Jawa (Filosofi), & Konzili
  */
 
+
+const DAFTAR_TOKEN_AKTIF = {
+    "TIUS2026": "2026-12-31", // Contoh: Token TIUS2026 berlaku sampai akhir 2026
+    "VIP-MEMBER": "9999-12-31", // Token unlimited
+    "COBA": "2026-02-10"        // Token percobaan
+};
+
 // ==========================================
 // KONSTANTA & DATA REFERENSI
 // ==========================================
@@ -519,7 +526,7 @@ function generateCalendar() {
     const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     mNav.innerText = `${namaBulan[m]} ${y}`;
 
-    // Header Hari
+    // 1. Gambar Header Hari (Min, Sen, Sel...)
     HARI.forEach((h, i) => {
         const el = document.createElement('div');
         el.innerText = h.substring(0, 3);
@@ -530,10 +537,10 @@ function generateCalendar() {
     const firstDay = new Date(y, m, 1).getDay();
     const daysInMonth = new Date(y, m + 1, 0).getDate();
 
-    // Padding awal bulan
+    // 2. Tambah spasi kosong jika bulan tidak mulai dari hari Minggu
     for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
-    // Render Tanggal
+    // 3. Render Tanggal-tanggal
     for (let d = 1; d <= daysInMonth; d++) {
         const dateObj = new Date(y, m, d);
         const p = getPasaran(dateObj);
@@ -545,22 +552,22 @@ function generateCalendar() {
         
         cell.innerHTML = `<div class="date-num">${d}</div><div class="pasaran-text">${p}</div>`;
         
-        // FUNGSI KLIK TANGGAL
+        // --- BAGIAN KLIK YANG HARUS DIPERHATIKAN ---
         cell.onclick = () => {
             const savedToken = localStorage.getItem('kalender_token_tius');
             
+            // Jika token benar, langsung update detail. Jika salah, munculkan kotak input token.
             if (checkTokenLogic(savedToken)) {
                 document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
                 cell.classList.add('selected-day');
                 updateDetail(dateObj, p);
             } else {
-                showTokenModal();
+                showTokenModal(); 
             }
         };
         grid.appendChild(cell);
     }
 }
-
 // ==========================================
 // LOGIKA TOKEN PRO
 // ==========================================
