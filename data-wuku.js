@@ -1,5 +1,5 @@
-// data-wuku.js
-const DATA_WUKU = {
+// data-wuku.js - Data Wuku Lengkap (30 Wuku)
+window.DATA_WUKU = window.DATA_WUKU || {
     "Sinta": `<b>Wuku SINTA: RINGKEL</b><br><br>
         Hari Naas: Kamis, Senin<br>
         • Dewa Bumi: Bethara Yamadipati.<br>
