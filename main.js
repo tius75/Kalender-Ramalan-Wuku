@@ -490,5 +490,44 @@ document.addEventListener("DOMContentLoaded", () => {
     if(next) next.onclick = () => { current.setMonth(current.getMonth() + 1); generateCalendar(); };
 });
 
+// --- LOGIKA TOKEN TIUS ---
+const SECRET_KEY = "TIUS_2026_MANTRA"; // Samakan dengan di admin.html
 
+function validateAndSaveToken() {
+    const input = document.getElementById('tokenInput').value.trim();
+    if (checkTokenLogic(input)) {
+        localStorage.setItem('kalender_token_tius', input);
+        alert("Token Berhasil Aktif!");
+        document.getElementById('tokenModal').style.display = 'none';
+        // Refresh detail yang tadi diklik
+        location.reload(); 
+    } else {
+        alert("Token Salah atau Sudah Kedaluwarsa!");
+    }
+}
 
+function checkTokenLogic(token) {
+    if (!token || !token.includes('-')) return false;
+    try {
+        const [expiry, hash] = token.split('-');
+        // Verifikasi apakah hash cocok dengan tanggal expired + secret
+        const validHash = btoa(expiry + SECRET_KEY).substring(0, 8);
+        if (hash !== validHash) return false;
+
+        // Cek apakah tanggal sekarang belum melewati tanggal expired
+        const expY = parseInt(expiry.substring(0, 4));
+        const expM = parseInt(expiry.substring(4, 6)) - 1;
+        const expD = parseInt(expiry.substring(6, 8));
+        const expirationDate = new Date(expY, expM, expD);
+        
+        return expirationDate > new Date();
+    } catch (e) { return false; }
+}
+
+function showTokenModal() {
+    document.getElementById('tokenModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('tokenModal').style.display = 'none';
+}
