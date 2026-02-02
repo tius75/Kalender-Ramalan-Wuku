@@ -1,4 +1,4 @@
-/**
+8/**
  * KALENDER JAWA MODERN - VERSI FINAL FIX 2026
  * Update: Windu Sancaya, Tahun Jawa (Filosofi), & Konzili
  */
@@ -765,7 +765,7 @@ function showTokenModal() {
                 
                 <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 5px solid #ffc107;">
                     <h4 style="margin-top: 0;">📞 Hubungi Admin untuk Token:</h4>
-                    <p>WhatsApp: <a href="https://wa.me/6281234567890?text=Halo%20admin,%20saya%20ingin%20membeli%20token%20Kalender%20Jawa" 
+                    <p>WhatsApp: <a href="https://wa.me/6285117021168?text=Halo%20admin,%20saya%20ingin%20membeli%20token%20Kalender%20Jawa" 
                                    target="_blank" 
                                    style="color: #25D366; font-weight: bold;">
                         0812-3456-7890
