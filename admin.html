@@ -2,63 +2,814 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - Set Token Kalender</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Kalender Jawa</title>
     <style>
-        body { font-family: sans-serif; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .admin-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 320px; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #D30000; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #b30000; }
-        #panel { display: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #D30000 0%, #9B0000 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .admin-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .admin-header p {
+            opacity: 0.9;
+        }
+        
+        .admin-content {
+            padding: 30px;
+            display: grid;
+            gap: 30px;
+        }
+        
+        .section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section h2 {
+            color: #D30000;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .package-btn {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .package-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .package-btn.selected {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        
+        .package-btn .duration {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .package-btn .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+        
+        .package-btn .discount {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #388E3C;
+        }
+        
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #1976D2;
+        }
+        
+        .btn-danger {
+            background: #F44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #D32F2F;
+        }
+        
+        .token-result {
+            background: #e8f5e9;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .token-result.show {
+            display: block;
+        }
+        
+        .token-code {
+            background: #333;
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.2em;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        .token-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .token-info div {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .token-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+        
+        .token-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .token-item.expired {
+            opacity: 0.6;
+            background: #f5f5f5;
+        }
+        
+        .token-item .token-code {
+            background: none;
+            color: #333;
+            padding: 0;
+            font-size: 1em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card.total .number { color: #D30000; }
+        .stat-card.active .number { color: #4CAF50; }
+        .stat-card.expired .number { color: #F44336; }
+        
+        @media (max-width: 768px) {
+            .admin-content {
+                padding: 20px;
+            }
+            
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div id="login" class="admin-card">
-        <h2>Admin Login</h2>
-        <input type="password" id="passAdmin" placeholder="Masukkan Password Admin">
-        <button onclick="login()">Masuk</button>
-    </div>
-
-    <div id="panel" class="admin-card">
-        <h2>Set Token Manual</h2>
-        <p>Token Aktif: <b id="tokenSekarang" style="color: #D30000;">-</b></p>
-        <input type="text" id="inputTokenBaru" placeholder="Ketik Token Baru (Contoh: TIUS99)">
-        <button onclick="updateToken()">Simpan Token Baru</button>
-        <hr>
-        <button onclick="location.reload()" style="background: #666;">Keluar</button>
-    </div>
-
-<script>
-    // GANTI PASSWORD ADMIN ANDA DI SINI
-    const PASSWORD_ADMIN = "tius123"; 
-
-    function login() {
-        const input = document.getElementById('passAdmin').value;
-        if(input === PASSWORD_ADMIN) {
-            document.getElementById('login').style.display = 'none';
-            document.getElementById('panel').style.display = 'block';
-            tampilkanToken();
-        } else {
-            alert("Password Salah!");
-        }
-    }
-
-    function tampilkanToken() {
-        // Ambil token dari memori bersama (localStorage)
-        const t = localStorage.getItem('token_aktif_tius') || "TIUS2026";
-        document.getElementById('tokenSekarang').innerText = t;
-    }
-
-    function updateToken() {
-        const tkn = document.getElementById('inputTokenBaru').value;
-        if(tkn.trim() === "") return alert("Token tidak boleh kosong!");
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>🛠️ Admin Panel Kalender Jawa</h1>
+            <p>Kelola token akses premium untuk aplikasi Kalender Jawa</p>
+        </div>
         
-        // Simpan token ke localStorage agar terbaca oleh main.js
-        localStorage.setItem('token_aktif_tius', tkn);
-        alert("Token berhasil diperbarui!");
-        tampilkanToken();
-    }
-</script>
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Password Section -->
+            <div class="section" id="passwordSection">
+                <h2>🔐 Verifikasi Admin</h2>
+                <div class="form-group">
+                    <label>Password Admin:</label>
+                    <input type="password" id="adminPassword" placeholder="Masukkan password admin">
+                </div>
+                <button class="btn btn-primary" onclick="verifyAdmin()">
+                    🔑 Login sebagai Admin
+                </button>
+            </div>
+            
+            <!-- Main Panel (hidden until verified) -->
+            <div class="section" id="mainPanel" style="display: none;">
+                <!-- Generate Token Section -->
+                <div>
+                    <h2>📦 Generate Token Baru</h2>
+                    <p>Pilih paket dan buat token untuk pelanggan:</p>
+                    
+                    <div class="package-grid" id="packageGrid">
+                        <!-- Packages will be loaded here -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Pelanggan (optional):</label>
+                        <input type="email" id="customerEmail" placeholder="email@pelanggan.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Catatan (optional):</label>
+                        <textarea id="tokenNote" rows="3" placeholder="Catatan untuk token ini"></textarea>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="generateSelectedToken()">
+                        🎫 Generate Token
+                    </button>
+                    
+                    <!-- Token Result -->
+                    <div class="token-result" id="tokenResult">
+                        <h3>✅ Token Berhasil Dibuat!</h3>
+                        <p>Salin token berikut dan berikan kepada pelanggan:</p>
+                        <div class="token-code" id="newTokenCode"></div>
+                        
+                        <div class="token-info">
+                            <div>
+                                <strong>Paket:</strong><br>
+                                <span id="newTokenPackage"></span>
+                            </div>
+                            <div>
+                                <strong>Berlaku hingga:</strong><br>
+                                <span id="newTokenExpiry"></span>
+                            </div>
+                            <div>
+                                <strong>Tanggal dibuat:</strong><br>
+                                <span id="newTokenCreated"></span>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-secondary" onclick="copyTokenToClipboard()">
+                            📋 Salin Token
+                        </button>
+                        <button class="btn" onclick="printToken()" style="background: #FF9800; color: white; margin-left: 10px;">
+                            🖨️ Cetak
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Token Management -->
+                <div>
+                    <h2>📋 Kelola Token</h2>
+                    
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card total">
+                            <div class="number" id="totalTokens">0</div>
+                            <div>Total Token</div>
+                        </div>
+                        <div class="stat-card active">
+                            <div class="number" id="activeTokens">0</div>
+                            <div>Token Aktif</div>
+                        </div>
+                        <div class="stat-card expired">
+                            <div class="number" id="expiredTokens">0</div>
+                            <div>Token Expired</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Token List -->
+                    <div class="token-list" id="tokenList">
+                        <!-- Tokens will be loaded here -->
+                    </div>
+                    
+                    <button class="btn btn-secondary" onclick="refreshTokenList()">
+                        🔄 Refresh List
+                    </button>
+                    <button class="btn btn-danger" onclick="clearExpiredTokens()" style="margin-left: 10px;">
+                        🗑️ Hapus Expired
+                    </button>
+                </div>
+                
+                <!-- Revoke Token -->
+                <div>
+                    <h2>🗑️ Hapus Token</h2>
+                    <div class="form-group">
+                        <label>Token yang akan dihapus:</label>
+                        <input type="text" id="revokeTokenInput" placeholder="Masukkan kode token">
+                    </div>
+                    <button class="btn btn-danger" onclick="revokeSelectedToken()">
+                        ❌ Hapus Token
+                    </button>
+                    <div id="revokeResult" style="margin-top: 15px;"></div>
+                </div>
+                
+                <!-- Export/Import -->
+                <div>
+                    <h2>💾 Backup & Restore</h2>
+                    <button class="btn btn-secondary" onclick="exportTokens()">
+                        💾 Export Tokens (JSON)
+                    </button>
+                    <button class="btn" onclick="importTokens()" style="background: #9C27B0; color: white; margin-left: 10px;">
+                        📥 Import Tokens
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleFileImport(this)">
+                    
+                    <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                        Export untuk backup data token. Import untuk restore dari backup.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi Paket
+        const PACKAGES = {
+            "1bulan": {
+                name: "1 Bulan",
+                duration: 1, // bulan
+                price: "Rp 25.000",
+                discount: "",
+                color: "#4CAF50"
+            },
+            "3bulan": {
+                name: "3 Bulan",
+                duration: 3,
+                price: "Rp 60.000",
+                discount: "Hemat 20%",
+                color: "#2196F3"
+            },
+            "6bulan": {
+                name: "6 Bulan",
+                duration: 6,
+                price: "Rp 100.000",
+                discount: "Hemat 33%",
+                color: "#FF9800"
+            },
+            "1tahun": {
+                name: "1 Tahun",
+                duration: 12,
+                price: "Rp 150.000",
+                discount: "Hemat 50%",
+                color: "#9C27B0"
+            },
+            "unlimited": {
+                name: "Unlimited",
+                duration: 9999, // tahun
+                price: "Rp 500.000",
+                discount: "Akses seumur hidup",
+                color: "#D30000"
+            }
+        };
+
+        // Password Admin (ganti dengan password yang lebih aman di production)
+        const ADMIN_PASSWORD = "admin123";
+
+        // Database Token (simpan di localStorage)
+        let tokenDatabase = JSON.parse(localStorage.getItem('kalender_token_database') || '{}');
+        let selectedPackage = null;
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPackageGrid();
+            loadTokenDatabase();
+        });
+
+        // Render Package Grid
+        function renderPackageGrid() {
+            const grid = document.getElementById('packageGrid');
+            grid.innerHTML = '';
+            
+            for (const [key, pkg] of Object.entries(PACKAGES)) {
+                const div = document.createElement('div');
+                div.className = 'package-btn';
+                div.dataset.package = key;
+                div.onclick = () => selectPackage(key);
+                
+                div.innerHTML = `
+                    <div class="duration">${pkg.name}</div>
+                    <div class="price">${pkg.price}</div>
+                    ${pkg.discount ? `<div class="discount">${pkg.discount}</div>` : ''}
+                `;
+                
+                grid.appendChild(div);
+            }
+        }
+
+        // Select Package
+        function selectPackage(packageKey) {
+            // Remove selected class from all
+            document.querySelectorAll('.package-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked
+            const selectedBtn = document.querySelector(`[data-package="${packageKey}"]`);
+            selectedBtn.classList.add('selected');
+            
+            selectedPackage = packageKey;
+        }
+
+        // Verify Admin Password
+        function verifyAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('mainPanel').style.display = 'block';
+                updateStats();
+                loadTokenList();
+            } else {
+                alert('❌ Password salah!');
+            }
+        }
+
+        // Generate Token
+        function generateSelectedToken() {
+            if (!selectedPackage) {
+                alert('Pilih paket terlebih dahulu!');
+                return;
+            }
+            
+            const packageData = PACKAGES[selectedPackage];
+            const customerEmail = document.getElementById('customerEmail').value;
+            const note = document.getElementById('tokenNote').value;
+            
+            // Generate token code
+            const prefix = selectedPackage === 'unlimited' ? 'VIP' : 'TKN';
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            const year = new Date().getFullYear().toString().substr(-2);
+            const token = `${prefix}${randomNum}${year}`;
+            
+            // Calculate expiry date
+            const today = new Date();
+            const expiryDate = new Date(today);
+            
+            if (selectedPackage === 'unlimited') {
+                expiryDate.setFullYear(9999);
+            } else {
+                expiryDate.setMonth(today.getMonth() + packageData.duration);
+            }
+            
+            // Format dates
+            const createdStr = today.toISOString().split('T')[0];
+            const expiryStr = expiryDate.toISOString().split('T')[0];
+            
+            // Save to database
+            tokenDatabase[token] = {
+                package: packageData.name,
+                created: createdStr,
+                expiry: expiryStr,
+                email: customerEmail,
+                note: note,
+                status: 'active'
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('kalender_token_database', JSON.stringify(tokenDatabase));
+            
+            // Show result
+            document.getElementById('newTokenCode').textContent = token;
+            document.getElementById('newTokenPackage').textContent = packageData.name;
+            document.getElementById('newTokenExpiry').textContent = expiryStr;
+            document.getElementById('newTokenCreated').textContent = createdStr;
+            document.getElementById('tokenResult').classList.add('show');
+            
+            // Update stats and list
+            updateStats();
+            loadTokenList();
+            
+            // Scroll to result
+            document.getElementById('tokenResult').scrollIntoView({ behavior: 'smooth' });
+            
+            // Reset form
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('tokenNote').value = '';
+        }
+
+        // Copy token to clipboard
+        function copyTokenToClipboard() {
+            const tokenCode = document.getElementById('newTokenCode').textContent;
+            navigator.clipboard.writeText(tokenCode).then(() => {
+                alert(`✅ Token ${tokenCode} berhasil disalin ke clipboard!`);
+            });
+        }
+
+        // Print token
+        function printToken() {
+            const tokenCode = document.getElementById('newTokenCode').textContent;
+            const packageName = document.getElementById('newTokenPackage').textContent;
+            const expiry = document.getElementById('newTokenExpiry').textContent;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Token Kalender Jawa</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .token { font-size: 24px; font-weight: bold; margin: 20px 0; }
+                        .info { margin: 10px 0; }
+                        @media print { button { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <h2>Token Kalender Jawa</h2>
+                    <div class="token">${tokenCode}</div>
+                    <div class="info"><strong>Paket:</strong> ${packageName}</div>
+                    <div class="info"><strong>Berlaku hingga:</strong> ${expiry}</div>
+                    <div class="info"><strong>Cara penggunaan:</strong> Masukkan token di aplikasi Kalender Jawa</div>
+                    <br><br>
+                    <button onclick="window.print()">🖨️ Cetak</button>
+                    <button onclick="window.close()">✕ Tutup</button>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // Load token database
+        function loadTokenDatabase() {
+            const saved = localStorage.getItem('kalender_token_database');
+            if (saved) {
+                tokenDatabase = JSON.parse(saved);
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let total = 0;
+            let active = 0;
+            let expired = 0;
+            
+            for (const [token, data] of Object.entries(tokenDatabase)) {
+                total++;
+                const expiryDate = new Date(data.expiry);
+                if (today <= expiryDate) {
+                    active++;
+                } else {
+                    expired++;
+                }
+            }
+            
+            document.getElementById('totalTokens').textContent = total;
+            document.getElementById('activeTokens').textContent = active;
+            document.getElementById('expiredTokens').textContent = expired;
+        }
+
+        // Load token list
+        function loadTokenList() {
+            const container = document.getElementById('tokenList');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (Object.keys(tokenDatabase).length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">Belum ada token</p>';
+                return;
+            }
+            
+            // Sort by expiry date (newest first)
+            const sortedTokens = Object.entries(tokenDatabase)
+                .sort(([,a], [,b]) => new Date(b.created) - new Date(a.created));
+            
+            let html = '';
+            
+            sortedTokens.forEach(([token, data]) => {
+                const expiryDate = new Date(data.expiry);
+                const isExpired = today > expiryDate;
+                const daysLeft = Math.ceil((expiryDate - today) / (1000 * 60 * 60 * 24));
+                
+                html += `
+                    <div class="token-item ${isExpired ? 'expired' : ''}">
+                        <div>
+                            <div class="token-code">${token}</div>
+                            <div style="font-size: 0.9em; color: #666;">
+                                ${data.package} • Dibuat: ${data.created}
+                                ${data.email ? `• Email: ${data.email}` : ''}
+                            </div>
+                            ${data.note ? `<div style="font-size: 0.85em; color: #888; margin-top: 5px;">${data.note}</div>` : ''}
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; color: ${isExpired ? '#F44336' : '#4CAF50'}">
+                                ${isExpired ? 'EXPIRED' : `Berlaku hingga: ${data.expiry}`}
+                            </div>
+                            ${!isExpired ? `<div style="font-size: 0.9em; color: #666;">${daysLeft} hari lagi</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Refresh token list
+        function refreshTokenList() {
+            loadTokenDatabase();
+            updateStats();
+            loadTokenList();
+        }
+
+        // Revoke token
+        function revokeSelectedToken() {
+            const token = document.getElementById('revokeTokenInput').value.trim();
+            
+            if (!token) {
+                alert('Masukkan token yang akan dihapus!');
+                return;
+            }
+            
+            if (!tokenDatabase[token]) {
+                document.getElementById('revokeResult').innerHTML = `
+                    <div style="color: #F44336; background: #ffebee; padding: 10px; border-radius: 5px;">
+                        ❌ Token tidak ditemukan
+                    </div>
+                `;
+                return;
+            }
+            
+            if (confirm(`Hapus token ${token}?\nPaket: ${tokenDatabase[token].package}`)) {
+                delete tokenDatabase[token];
+                localStorage.setItem('kalender_token_database', JSON.stringify(tokenDatabase));
+                
+                document.getElementById('revokeResult').innerHTML = `
+                    <div style="color: #4CAF50; background: #e8f5e9; padding: 10px; border-radius: 5px;">
+                        ✅ Token berhasil dihapus
+                    </div>
+                `;
+                
+                document.getElementById('revokeTokenInput').value = '';
+                updateStats();
+                loadTokenList();
+                
+                setTimeout(() => {
+                    document.getElementById('revokeResult').innerHTML = '';
+                }, 3000);
+            }
+        }
+
+        // Clear expired tokens
+        function clearExpiredTokens() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let expiredCount = 0;
+            
+            for (const [token, data] of Object.entries(tokenDatabase)) {
+                const expiryDate = new Date(data.expiry);
+                if (today > expiryDate) {
+                    delete tokenDatabase[token];
+                    expiredCount++;
+                }
+            }
+            
+            if (expiredCount > 0) {
+                localStorage.setItem('kalender_token_database', JSON.stringify(tokenDatabase));
+                alert(`✅ ${expiredCount} token expired berhasil dihapus`);
+                updateStats();
+                loadTokenList();
+            } else {
+                alert('Tidak ada token expired');
+            }
+        }
+
+        // Export tokens to JSON
+        function exportTokens() {
+            const dataStr = JSON.stringify(tokenDatabase, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `tokens_kalender_jawa_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Import tokens from JSON
+        function importTokens() {
+            document.getElementById('importFile').click();
+        }
+
+        function handleFileImport(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    // Merge with existing data
+                    Object.assign(tokenDatabase, importedData);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('kalender_token_database', JSON.stringify(tokenDatabase));
+                    
+                    alert(`✅ ${Object.keys(importedData).length} token berhasil diimport!`);
+                    updateStats();
+                    loadTokenList();
+                } catch (error) {
+                    alert('❌ File JSON tidak valid!');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            input.value = '';
+        }
+    </script>
 </body>
 </html>
