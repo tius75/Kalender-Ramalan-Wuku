@@ -1,4 +1,4 @@
-/**
+8/**
  * KALENDER JAWA MODERN - VERSI FINAL FIX 2026
  * Update: Windu Sancaya, Tahun Jawa (Filosofi), & Konzili
  */
@@ -352,14 +352,16 @@ const TABEL_SRIJATI = {
        { usia: "49-54 tahun", nilai: 1, fase: "Masa Persiapan Pensiun" },
     ],
     10: [
-        { usia: "0-8 tahun", nilai: 8, fase: "Masa Kanak-kanak" },
-        { usia: "9-16 tahun", nilai: 6, fase: "Masa Remaja" },
-        { usia: "17-24 tahun", nilai: 7, fase: "Masa Awal Dewasa" },
-        { usia: "25-32 tahun", nilai: 8, fase: "Masa Produktif" },
-        { usia: "33-40 tahun", nilai: 9, fase: "Puncak Karir" },
-        { usia: "41-48 tahun", nilai: 7, fase: "Masa Stabil" },
-        { usia: "49-56 tahun", nilai: 6, fase: "Masa Persiapan Pensiun" },
-        { usia: "57-64 tahun", nilai: 5, fase: "Masa Pensiun" }
+       { usia: "0-6 tahun", nilai: 2, fase: "Masa Kanak-kanak" },
+        { usia: "7-12 tahun", nilai: 1, fase: "Masa Remaja" },
+        { usia: "13-18 tahun", nilai: 0, fase: "Masa Awal Dewasa" },
+        { usia: "19-24 tahun", nilai: 4, fase: "Masa Produktif" },
+        { usia: "25-30 tahun", nilai: 1, fase: "Puncak Karir" },
+        { usia: "31-36 tahun", nilai: 3, fase: "Masa Stabil" },
+        { usia: "37-42 tahun", nilai: 0, fase: "Masa Persiapan Pensiun" },
+      { usia: "43-48 tahun", nilai: 0, fase: "Masa Persiapan Pensiun" },
+       { usia: "49-54 tahun", nilai: 4, fase: "Masa Persiapan Pensiun" },
+    { usia: "55-60 tahun", nilai: 4, fase: "Masa Persiapan Pensiun" },
     ],
     11: [
         { usia: "0-8 tahun", nilai: 9, fase: "Masa Kanak-kanak" },
