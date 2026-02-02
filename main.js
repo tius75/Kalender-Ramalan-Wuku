@@ -1,5 +1,5 @@
 /**
- * KALENDER JAWA MODERN - VERSI FINAL FIX 2026 WITH TOKEN SYSTEM
+ * KALENDER JAWA MODERN - VERSI FINAL FIX 2026
  * Update: Windu Sancaya, Tahun Jawa (Filosofi), & Konzili
  */
 
@@ -85,6 +85,9 @@ function getPasaran(date) {
     return PASARAN[(((diff + 1) % 5) + 5) % 5];
 }
 
+
+
+
 function getZodiak(date) {
     const d = date.getDate(); const m = date.getMonth() + 1;
     if ((m == 3 && d >= 21) || (m == 4 && d <= 19)) return "Aries";
@@ -103,27 +106,45 @@ function getZodiak(date) {
 
 function getLunarShio(date) {
     const y = date.getFullYear();
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    
+    // 1. Tentukan Tanggal Imlek tahun tersebut (Estimasi jika DB tidak ada)
     let imlekM, imlekD, shioTahunIni;
-    if (typeof DB_IMLEK !== 'undefined' && DB_IMLEK[y]) {
+    
+    if (DB_IMLEK[y]) {
         imlekM = DB_IMLEK[y].m;
         imlekD = DB_IMLEK[y].d;
         shioTahunIni = DB_IMLEK[y].shio;
     } else {
+        // Algoritma Cadangan jika data tahun tsb tidak diketik di DB
         const shios = ["Monyet", "Ayam", "Anjing", "Babi", "Tikus", "Kerbau", "Macan", "Kelinci", "Naga", "Ular", "Kuda", "Kambing"];
         shioTahunIni = shios[y % 12];
-        imlekM = 2; imlekD = 5;
+        imlekM = 2; imlekD = 5; // Estimasi rata-rata
     }
+
     const tglImlek = new Date(y, imlekM - 1, imlekD);
     const isSudahImlek = date >= tglImlek;
+
+    // 2. Hitung Lunar Day (Agar tidak muncul angka negatif/undefined)
     const diffTime = Math.abs(date - tglImlek);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
     let lunarDay = isSudahImlek ? (diffDays % 30) + 1 : 30 - (diffDays % 30);
+    let shioFinal = isSudahImlek ? shioTahunIni : (DB_IMLEK[y-1] ? DB_IMLEK[y-1].shio : "Transisi");
+
     return {
         full: `${lunarDay} - ${isSudahImlek ? Math.floor(diffDays/30)+1 : 12} - ${y + 551}`,
-        shio: isSudahImlek ? shioTahunIni : "Transisi",
+        shio: shioFinal,
         ramalan: "Gunakan energi hari ini dengan bijaksana."
     };
 }
+
+
+
+
+
+
 
 function getWuku(date) {
     const wukuList = ["Sinta", "Landep", "Wukir", "Kurantil", "Tolu", "Gumbreg", "Warigalit", "Wariagung", "Julungwangi", "Sungsang", "Galungan", "Kuningan", "Langkir", "Mandasiya", "Julungpujut", "Pahang", "Kuruwelut", "Marakeh", "Tambir", "Medangkungan", "Maktal", "Wuye", "Manahil", "Prangbakat", "Bala", "Wugu", "Wayang", "Kulawu", "Dukut", "Watugunung"];
@@ -149,21 +170,33 @@ function getTanggalJawa(date) {
     return { tanggal: tglJawa, bulan: DATA_BULAN_JAWA[bulanIdx], tahun: tahunJawa };
 }
 
-function getSiklusBesar(date) {
-    const tahunJawa = getTanggalJawa(date).tahun;
+function getSiklusBesar(tahunJawa) {
+
+    if (typeof tahunJawa !== "number" || tahunJawa < 2000 || tahunJawa > 3000) {
+        tahunJawa = 2576;
+    }
+
     const REF_TAHUN_JAWA = 2576;
     const REF_TAHUN_IDX = 4; // Dal
     const REF_WINDU_IDX = 2; // Sancaya
+
     const diffYears = tahunJawa - REF_TAHUN_JAWA;
+
     let tahunIdx = (REF_TAHUN_IDX + diffYears) % 8;
     if (tahunIdx < 0) tahunIdx += 8;
+
     let winduIdx = (REF_WINDU_IDX + Math.floor(diffYears / 8)) % 4;
     if (winduIdx < 0) winduIdx += 4;
-    return { tahun: DATA_SIKLUS_TAHUN[tahunIdx], windu: WINDU_LIST[winduIdx] };
+
+    return {
+        tahun: DATA_SIKLUS_TAHUN[tahunIdx],
+        windu: WINDU_LIST[winduIdx]
+    };
 }
 
 function getMangsaInfo(date) {
-    const d = date.getDate(); const m = date.getMonth() + 1;
+    const d = date.getDate();
+    const m = date.getMonth() + 1;
     let id = 12; 
     if ((d >= 22 && m == 6) || (m == 7) || (d <= 1 && m == 8)) id = 1;
     else if (d >= 2 && m == 8 && d <= 25) id = 2;
@@ -176,11 +209,15 @@ function getMangsaInfo(date) {
     else if (m == 3 && d <= 26) id = 9;
     else if ((d >= 27 && m == 3) || (d <= 19 && m == 4)) id = 10;
     else if ((d >= 20 && m == 4) || (d <= 12 && m == 5)) id = 11;
-    return (typeof DATA_MANGSA !== 'undefined') ? DATA_MANGSA[id] : {nama: "-", deskripsi: "-"};
+    return (typeof DATA_MANGSA !== 'undefined') ? DATA_MANGSA[id] : null;
 }
 
 function getArahMeditasi(neptu) {
-    const map = { 7: "Barat", 8: "Utara", 9: "Timur", 10: "Selatan", 11: "Barat", 12: "Utara", 13: "Timur", 14: "Selatan", 15: "Barat", 16: "Utara", 17: "Timur", 18: "Selatan" };
+    const map = {
+        7: "Kulon - Barat", 8: "Lor - Utara", 9: "Wetan - Timur", 10: "Kidul - Selatan",
+        11: "Kulon - Barat", 12: "Lor - Utara", 13: "Wetan - Timur", 14: "Kidul - Selatan",
+        15: "Kulon - Barat", 16: "Lor - Utara", 17: "Wetan - Timur", 18: "Kidul - Selatan"
+    };
     return map[neptu] || "Pusat";
 }
 
@@ -189,19 +226,40 @@ function hitungUsiaLengkap(birthDate) {
     let years = now.getFullYear() - birthDate.getFullYear();
     let months = now.getMonth() - birthDate.getMonth();
     let days = now.getDate() - birthDate.getDate();
-    if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
-    if (months < 0) { years--; months += 12; }
-    return `${years} Thn, ${months} Bln, ${days} Hr`;
+    if (days < 0) {
+        months--;
+        let lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += lastMonth.getDate();
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+    return `${years} Tahun, ${months} Bulan, ${days} Hari`;
 }
 
 // ==========================================
-// RENDER & UI
+// FUNGSI CARI WETON
 // ==========================================
+function searchWeton() {
+    const input = document.getElementById('dateInput');
+    if (!input || !input.value) return alert("Silakan pilih tanggal terlebih dahulu!");
+    
+    const target = new Date(input.value);
+    current = new Date(target.getFullYear(), target.getMonth(), 1);
+    
+    generateCalendar();
+    updateDetail(target, getPasaran(target));
+}
 
+// ==========================================
+// RENDER UI KALENDER
+// ==========================================
 function generateCalendar() {
     const grid = document.getElementById('calendar');
     const mNav = document.getElementById('monthYearNav');
     if (!grid) return;
+    
     grid.innerHTML = '';
     const y = current.getFullYear();
     const m = current.getMonth();
@@ -217,6 +275,7 @@ function generateCalendar() {
 
     const firstDay = new Date(y, m, 1).getDay();
     const daysInMonth = new Date(y, m + 1, 0).getDate();
+
     for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
 
     for (let d = 1; d <= daysInMonth; d++) {
@@ -224,11 +283,12 @@ function generateCalendar() {
         const p = getPasaran(dateObj);
         const cell = document.createElement('div');
         cell.className = 'calendar-day';
+        
         if (dateObj.getDay() === 0) cell.classList.add('sunday-red');
         if (dateObj.toDateString() === TODAY.toDateString()) cell.classList.add('today-highlight');
-        cell.innerHTML = `<div class="date-num">${d}</div><div class="pasaran-text">${p}</div>`;
         
-        cell.onclick = () => {
+        cell.innerHTML = `<div class="date-num">${d}</div><div class="pasaran-text">${p}</div>`;
+      cell.onclick = () => {
             const savedToken = localStorage.getItem('kalender_token_tius');
             if (checkTokenLogic(savedToken)) {
                 document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
@@ -245,74 +305,195 @@ function generateCalendar() {
 function updateDetail(date, pasaran) {
     const detailDiv = document.getElementById('detail');
     if (!detailDiv) return;
+
     const h = HARI[date.getDay()];
     const wetonKey = `${h} ${pasaran}`;
-    const neptu = NEPTU_HARI[h] + NEPTU_PASARAN[pasaran];
-    const infoJawa = getTanggalJawa(date);
+    const nHari = NEPTU_HARI[h];
+    const nPasaran = NEPTU_PASARAN[pasaran];
+    const neptu = nHari + nPasaran;
+    
     const wukuName = getWuku(date);
+    const infoJawa = getTanggalJawa(date); 
+
     const siklusBesar = getSiklusBesar(date);
     const mangsa = getMangsaInfo(date);
     const zodiak = getZodiak(date);
     const lunar = getLunarShio(date);
     const nasibKematian = NASIB_AHLI_WARIS[neptu % 4];
     const nasib5 = PEMBAGI_5[neptu % 5];
+    const arahMeditasi = getArahMeditasi(neptu);
     const usia = hitungUsiaLengkap(date);
+    
+    const sifatHariIni = DATA_SIFAT_HARI[h] || "-";
+    const sifatPasaranIni = DATA_SIFAT_PASARAN[pasaran.toUpperCase()] || "-";
+
+    const watakNeptu = (typeof DATA_WATAK_NEPTU !== 'undefined') ? DATA_WATAK_NEPTU[neptu] : null;
+    const namaBulanMasehi = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const tglMasehiLengkap = `${date.getDate()} ${namaBulanMasehi[date.getMonth()]} ${date.getFullYear()}`;
+
+    const teksWuku = (typeof DATA_WUKU !== 'undefined') ? (DATA_WUKU[wukuName] || "Detail wuku belum tersedia.") : "Data Wuku tidak ditemukan.";
+    const dataSriJati = (typeof TABEL_SRIJATI !== 'undefined') ? (TABEL_SRIJATI[neptu] || []) : [];
+
+    const isNaas = infoJawa.bulan.naas.includes(infoJawa.tanggal);
+    const isTaliWangke = (wetonKey === infoJawa.bulan.taliWangke);
+
+    let warningNaas = "";
+    if (isNaas || isTaliWangke) {
+        warningNaas = `<div style="background:#ffebee; color:#c62828; padding:12px; border-radius:8px; margin-bottom:15px; border-left:5px solid #d32f2f; font-size:0.85rem;">
+            <strong>⚠️ PERINGATAN HARI NAAS</strong><br>
+            ${isNaas ? `• Tanggal ${infoJawa.tanggal} ${infoJawa.bulan.nama} dilarang untuk hajat.<br>` : ""}
+            ${isTaliWangke ? `• Hari ini Tali Wangke (${infoJawa.bulan.taliWangke}).` : ""}
+        </div>`;
+    }
+
+
+
+    let tabelHtml = `<table style="width:100%; border-collapse: collapse; margin-top:10px; font-size:0.85rem; border:1px solid #ddd;">
+        <thead><tr style="background:#f9f9f9;"><th style="border:1px solid #ddd; padding:8px;">Usia</th><th style="border:1px solid #ddd; padding:8px;">Nilai</th><th style="border:1px solid #ddd; padding:8px;">Nasib</th></tr></thead><tbody>`;
+
+    if (dataSriJati.length > 0) {
+        dataSriJati.forEach(item => {
+            const skor = item.nilai !== undefined ? item.nilai : (item.v !== undefined ? item.v : 0);
+            const rangeUsia = item.usia || item.age || "-";
+            const deskripsi = (typeof SRI_JATI_DESC !== 'undefined') ? (SRI_JATI_DESC[skor] || "Data tidak ada") : "Deskripsi Error";
+            tabelHtml += `<tr><td style="border:1px solid #ddd; padding:8px; text-align:center;">${rangeUsia} Thn</td><td style="border:1px solid #ddd; padding:8px; text-align:center; color:#D30000; font-weight:bold;">${skor}</td><td style="border:1px solid #ddd; padding:8px;">${deskripsi}</td></tr>`;
+        });
+    } else {
+        tabelHtml += `<tr><td colspan="3" style="text-align:center; padding:10px;">Data tidak ditemukan</td></tr>`;
+    }
+    tabelHtml += `</tbody></table>`;
 
     detailDiv.style.display = 'block';
     detailDiv.innerHTML = `
-        <div id="printableArea" style="background:white; padding:15px; border-radius:10px; border:1px solid #ddd;">
-            <h2 style="color:red; border-bottom:2px solid red;">${wetonKey} (Neptu ${neptu})</h2>
-            <p><b>Masehi:</b> ${date.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</p>
-            <p><b>Jawa:</b> ${infoJawa.tanggal} ${infoJawa.bulan.nama} ${infoJawa.tahun} AJ</p>
-            <p><b>Wuku:</b> ${wukuName} | <b>Zodiak:</b> ${zodiak}</p>
-            <p><b>Tahun:</b> ${siklusBesar.tahun.nama} | <b>Windu:</b> ${siklusBesar.windu}</p>
-            <hr>
-            <p><b>Nasib:</b> ${nasib5.nama} (${nasib5.arti})</p>
-            <p><b>Usia Saat Ini:</b> ${usia}</p>
-            <button onclick="shareWhatsApp()" style="background:#25D366; color:white; border:none; padding:10px; width:100%; border-radius:5px; font-weight:bold; cursor:pointer;">Bagikan ke WhatsApp</button>
+        <div id="printableArea" class="card-result" style="background:#fff; padding:20px; border-radius:12px; border:1px solid #eee; box-shadow: 0 4px 6px rgba(0,0,0,0.05); color:#000;">
+            ${warningNaas}
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <h2 style="color:#D30000; margin:0 0 5px 0; border-bottom:2px solid #D30000; display:inline-block;">${wetonKey}</h2>
+                <button onclick="copyToClipboard()" style="background:#D30000; color:#fff; border:none; padding:8px 15px; border-radius:5px; cursor:pointer; font-weight:bold;">📋 Salin Hasil</button>
+            </div>
+        
+ <div style="background:#f1f8e9; padding:10px; border-radius:8px; margin:10px 0;">
+             
+  <p style="margin:10px 0 0; font-size:1.15rem; font-weight:bold;">📅 ${tglMasehiLengkap}</p>
+            
+            <div style="background:#fff3e0; padding:12px; border-radius:8px; margin:10px 0; border:1px solid #ffe0b2;">
+
+   <p><b>🏮 Lunar:</b> ${lunar.full} | <b>Shio:</b> ${lunar.shio}</p>
+                <p style="font-size:12px;"><i>Ramalan: ${lunar.ramalan}</i></p>
+            </div>
+    
+          
+                <p style="margin:0; color:#e65100; font-weight:bold; font-size:1rem;">✨ Siklus Tahun & Windu</p>
+                <p style="margin:5px 0; font-size:0.9rem;"><strong>Tahun:</strong> ${siklusBesar.tahun.nama} (${siklusBesar.tahun.makna})</p>
+                <p style="margin:5px 0; font-size:0.9rem;"><strong>Windu:</strong> ${siklusBesar.windu} </p>
+                <p style="margin:8px 0 0; font-size:0.8rem; font-style:italic; color:#6d4c41; line-height:1.4;">"${siklusBesar.tahun.deskripsi}"</p>
+            </div>
+
+     
+    
+            <div style="background:#fff9f9; padding:10px; border-radius:8px; margin:10px 0; border:1px solid #ffeded;">
+                <p style="margin:0; color:#d30000; font-weight:bold; font-size:1rem;">🌙 Kalender Jawa</p>
+                <p style="margin:5px 0; font-size:0.9rem;"><strong>Tanggal:</strong> ${infoJawa.tanggal} ${infoJawa.bulan.nama} ${infoJawa.tahun} AJ</p>
+                <p style="margin:5px 0; font-size:0.9rem;"><strong>Status Bulan:</strong> <span style="color:${infoJawa.bulan.status === 'Baik' || infoJawa.bulan.status === 'Sangat Baik' ? '#2e7d32' : '#c62828'}">${infoJawa.bulan.status}</span></p>
+                <p style="margin:5px 0; font-size:0.85rem; color:#666;"><strong>Tanggal Naas:</strong> ${infoJawa.bulan.naas.join(', ')}</p>
+                <p style="margin:5px 0; font-size:0.85rem; color:#666;"><strong>Tali Wangke:</strong> ${infoJawa.bulan.taliWangke}</p>
+            </div>
+
+            <div style="background:#f8f9fa; padding:12px; border-radius:8px; margin:10px 0; border:1px solid #e9ecef;">
+                <h4 style="margin:0 0 8px 0; color:#333; font-size:0.95rem;">🔢 Perhitungan Neptu</h4>
+                <p style="margin:0; font-family: monospace; font-size:0.9rem;">
+                    Hari ${h} = ${nHari}<br>
+                    Pasaran ${pasaran} = ${nPasaran}<br>
+                    --------------------- +<br>
+                    <strong>Total Neptu = ${neptu}</strong>
+                </p>
+            </div>
+
+            <div style="margin:15px 0; padding:12px; border:1px solid #ffe0b2; background:#fff8e1; border-radius:8px;">
+                <h4 style="margin:0 0 5px 0; color:#e65100; font-size:0.95rem;">🎭 Karakter Hari & Pasaran</h4>
+                <p style="font-size:0.85rem; margin:0;"><strong>Sifat ${h}:</strong> ${sifatHariIni}</p>
+                <p style="font-size:0.85rem; margin:5px 0 0 0;"><strong>Sifat ${pasaran}:</strong> ${sifatPasaranIni}</p>
+            </div>
+
+            <p style="margin:5px 0; font-size:0.9rem;"><strong>Lunar:</strong> (Shio ${lunar.shio}) | <strong>Zodiak:</strong> ${zodiak}</p>
+            <div style="background:#f0f7ff; border:1px solid #cfe2ff; padding:10px; border-radius:8px; margin:10px 0;">
+                <p style="margin:0; font-size:0.9rem;"><strong>⏳ Usia Saat Ini:</strong> ${usia}</p>
+                <p style="margin:5px 0 0; font-size:0.9rem;"><strong>🧘 Arah Meditasi:</strong> ${arahMeditasi}</p>
+            </div>
+            <div style="background:#e8f5e9; border:1px solid #c8e6c9; padding:12px; border-radius:8px; margin:15px 0;">
+                <h4 style="margin:0; color:#2e7d32; font-size:0.95rem;">💎 Nasib Pembagi 5: ${nasib5.nama}</h4>
+                <p style="font-size:0.85rem; margin-top:5px;">${nasib5.arti}</p>
+            </div>
+            <p style="margin:10px 0;"><strong>Neptu:</strong> ${neptu} | <strong>Wuku:</strong> ${wukuName}</p>
+            ${watakNeptu ? `<div style="margin:15px 0; padding:12px; border:1px solid #e1bee7; border-radius:8px; background:#f3e5f5;"><h4 style="color:#7b1fa2; margin:0 0 5px 0; border-bottom:1px solid #d1c4e9; font-size:0.95rem;">🌟 Watak Neptu ${neptu}</h4><p style="font-size:0.85rem; line-height:1.5; color:#4a148c;">${watakNeptu.watak}</p></div>` : ""}
+            <div style="margin:15px 0; padding:10px; background:#fffcf0; border-left:4px solid #f1c40f; border-radius:4px;"><h4 style="margin:0; color:#856404; font-size:0.9rem;">🪦 Nasib Kematian (Ahli Waris)</h4><p style="margin:5px 0 0; font-weight:bold;">${nasibKematian.nama}</p><p style="margin:2px 0 0; font-size:0.85rem; font-style:italic;">"${nasibKematian.arti}"</p></div>
+            ${mangsa ? `<div style="margin:15px 0; padding:12px; border:1px solid #cfe2ff; background:#f0f7ff; border-radius:8px;"><h4 style="margin:0; color:#084298; font-size:0.95rem;">🌾 Pranata Mangsa: ${mangsa.nama}</h4><p style="font-size:0.85rem; margin-top:5px; line-height:1.4;">${mangsa.deskripsi}</p></div>` : ""}
+            <div style="margin-top:20px;"><h4 style="color:#D30000; border-bottom:1px solid #eee; padding-bottom:5px;">🛡️ Analisis Wuku ${wukuName}</h4><div style="font-size:0.85rem; line-height:1.5;">${teksWuku}</div></div>
+            <div style="margin-top:20px;"><h4 style="color:#D30000; border-bottom:1px solid #eee; padding-bottom:5px;">📈 Siklus Sri Jati (Rejeki)</h4>${dataSriJati.length > 0 ? tabelHtml : "<p style='color:#999;'>Data tidak tersedia.</p>"}</div>
         </div>
     `;
     detailDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ==========================================
-// TOKEN LOGIC TIUS
+// FITUR SALIN & SHARE
 // ==========================================
-const SECRET_KEY = "TIUS_2026_MANTRA";
 
-function checkTokenLogic(token) {
-    if (!token || !token.includes('-')) return false;
-    try {
-        const [expiry, hash] = token.split('-');
-        const validHash = btoa(expiry + SECRET_KEY).substring(0, 8);
-        if (hash !== validHash) return false;
-        const expY = parseInt(expiry.substring(0, 4)), expM = parseInt(expiry.substring(4, 6)) - 1, expD = parseInt(expiry.substring(6, 8));
-        return new Date(expY, expM, expD) > new Date();
-    } catch (e) { return false; }
+function copyToClipboard() {
+    const detailArea = document.getElementById('printableArea');
+    if (!detailArea) return alert("Data tidak ditemukan!");
+
+    const clone = detailArea.cloneNode(true);
+    const button = clone.querySelector('button');
+    if (button) button.remove();
+
+    const textToCopy = "*HASIL LENGKAP CEK WETON JAWA*\n" + 
+                       "━━━━━━━━━━━━━━━━━━━━━━\n\n" + 
+                       clone.innerText.trim() + 
+                       "\n\n━━━━━━━━━━━━━━━━━━━━━━\n" +
+                       "_Kalender Jawa by Tius_";
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        alert("Hasil berhasil disalin ke clipboard!");
+    }).catch(err => {
+        alert("Gagal menyalin teks.");
+    });
 }
 
-function validateAndSaveToken() {
-    const input = document.getElementById('tokenInput').value.trim();
-    if (checkTokenLogic(input)) {
-        localStorage.setItem('kalender_token_tius', input);
-        alert("Token Berhasil Aktif!");
-        location.reload();
-    } else {
-        alert("Token Salah atau Sudah Kedaluwarsa!");
+function shareWhatsApp() {
+    const detailArea = document.getElementById('printableArea');
+    if (!detailArea) {
+        alert("Data tidak ditemukan!");
+        return;
     }
+
+    let content = detailArea.innerText
+        .replace(/📋 Salin Hasil/g, "")
+        .replace(/\r\n/g, "\n")
+        .replace(/Wuku\s*:/gi, "\nWuku : ")
+        .replace(/Pal\.?\s*Jati\s*:/gi, "\n\nPal. Jati : ")
+        .replace(/(📈\s*)?Siklus\s+Sri\s+Jati/gi, "\n\n📈 *Siklus Sri Jati (Rejeki)*\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+
+    const header = "*HASIL LENGKAP CEK WETON JAWA*\n" + "━━━━━━━━━━━━━━━━━━━━━━\n\n";
+    const footer = "\n\n━━━━━━━━━━━━━━━━━━━━━━\n" + "_Kalender Jawa by Tius_";
+    const finalText = header + content + footer;
+
+    window.open("https://wa.me/?text=" + encodeURIComponent(finalText), "_blank");
 }
 
-function showTokenModal() { document.getElementById('tokenModal').style.display = 'flex'; }
-function closeModal() { document.getElementById('tokenModal').style.display = 'none'; }
-function searchWeton() {
-    const input = document.getElementById('dateInput');
-    if (input && input.value) {
-        const target = new Date(input.value);
-        current = new Date(target.getFullYear(), target.getMonth(), 1);
-        generateCalendar();
-        updateDetail(target, getPasaran(target));
-    }
-}
+// ==========================================
+// INITIAL START
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    generateCalendar();
+    updateDetail(TODAY, getPasaran(TODAY));
+    const prev = document.getElementById('prevMonth');
+    const next = document.getElementById('nextMonth');
+    if(prev) prev.onclick = () => { current.setMonth(current.getMonth() - 1); generateCalendar(); };
+    if(next) next.onclick = () => { current.setMonth(current.getMonth() + 1); generateCalendar(); };
+});
 
 // START
 document.addEventListener("DOMContentLoaded", () => {
