@@ -1,6 +1,7 @@
 // data-wuku.js - Data Wuku Lengkap (30 Wuku)
 window.DATA_WUKU = window.DATA_WUKU || {
-    "Sinta": `<b>Wuku SINTA: RINGKEL</b><br><br>
+    "Sinta": `<b>Wuku SINTA: RINGKEL</b><br>
+        <i>(Hari yang sebaiknya dihindari karena berisiko memicu ketidakharmonisan dan perselisihan yang berkelanjutan).</i><br><br>
         Hari Naas: Kamis, Senin<br>
         • Dewa Bumi: Bethara Yamadipati.<br>
         • Pohon: Gendhayakan (Pelindung/penolong orang sakit).<br>
@@ -12,7 +13,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Pengobatan, sarat hujan, menawarkan pengasihan.<br>
         • Tidak baik untuk: Menanam dan membuka pekarangan.`,
 
-    "Landep": `<b>Wuku LANDEP: SONYA</b><br><br>
+    "Landep": `<b>Wuku LANDEP: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Maha Dewa.<br>
         • Pohon: Gendhayakan (Pelindung/penolong orang sakit).<br>
@@ -23,7 +25,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mengasah pedang, membuat pagar, membuat wisaya ikan.<br>
         • Tidak baik untuk: Pindah rumah, perkawinan, membuat pintu.`,
 
-    "Wukir": `<b>Wuku WUKIR: DONYO</b><br><br>
+    "Wukir": `<b>Wuku WUKIR: DONYO</b><br>
+        <i>(Hari yang bersifat fluktuatif antara baik dan buruk; sebaiknya tidak digunakan untuk urusan sakral karena berisiko mendatangkan kerugian materiil).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Mahayekti.<br>
         • Pohon: Nagasari (Wataknya prihatin).<br>
@@ -34,7 +37,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mantu, memperbaiki barang, berteman tulus.<br>
         • Tidak baik untuk: Tetirah, mengobati penyakit, mendirikan rumah.`,
 
-    "Kurantil": `<b>Wuku KURANTIL: MALIHAN</b><br><br>
+    "Kurantil": `<b>Wuku KURANTIL: MALIHAN</b><br>
+        <i>(Hari peralihan: Tidak disarankan untuk urusan sakral karena dipercaya dapat menguras energi keberuntungan dan harta benda).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Langsur.<br>
         • Pohon: Inggas (Terburu-buru tapi penyabar).<br>
@@ -45,7 +49,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari jodoh.<br>
         • Tidak baik untuk: Menikahkan anak, menanam, berteman.`,
 
-    "Tolu": `<b>Wuku TOLU: SONYA</b><br><br>
+    "Tolu": `<b>Wuku TOLU: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Bayu.<br>
         • Burung: Branjangan (Suka membuat perkara).<br>
@@ -55,7 +60,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari nafkah, mengobati orang, menanam, mantu.<br>
         • Tidak baik untuk: Berkhianat, berjudi, memanen buah tinggi.`,
 
-    "Gumbreg": `<b>Wuku GUMBREG: NYAWA</b><br><br>
+    "Gumbreg": `<b>Wuku GUMBREG: NYAWA</b><br>
+        <i>(Hari yang merupakan pantangan utama: Sangat krusial untuk dihindari demi menjaga keselamatan dan ketentraman hidup).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Cakra.<br>
         • Pohon: Beringin (Tempat berlindung).<br>
@@ -66,7 +72,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Berbesanan, mencari nafkah/keberuntungan.<br>
         • Tidak baik untuk: Menanam kebun, mendirikan rumah.`,
 
-    "Warigalit": `<b>Wuku WARIGALIT: RINGKEL</b><br><br>
+    "Warigalit": `<b>Wuku WARIGALIT: RINGKEL</b><br>
+        <i>(Hari yang sebaiknya dihindari karena berisiko memicu ketidakharmonisan dan perselisihan yang berkelanjutan).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Asmara.<br>
         • Pohon: Sulkastri (Kesayangan pembesar).<br>
@@ -77,7 +84,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menjalin persaudaraan, memuliakan leluhur, mengunjungi kerabat.<br>
         • Tidak baik untuk: Menyeleweng, berperang.`,
 
-    "Wariagung": `<b>Wuku WARIAGUNG: SONYA</b><br><br>
+    "Wariagung": `<b>Wuku WARIAGUNG: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Maharesi.<br>
         • Pohon: Cemara (Angkuh, suka menggoda).<br>
@@ -88,7 +96,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mendirikan rumah, bercocok tanam, berbesanan.<br>
         • Tidak baik untuk: Pindah tempat, menyiksa binatang.`,
 
-    "Julungwangi": `<b>Wuku JULUNGWANGI: SONYA</b><br><br>
+    "Julungwangi": `<b>Wuku JULUNGWANGI: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Sambo.<br>
         • Pohon: Cempaka (Banyak disenangi orang).<br>
@@ -99,7 +108,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Lakubrata, mencari wahyu, membuka tanah menanam.<br>
         • Tidak baik untuk: Pindah tempat, hajat, mendirikan bangunan.`,
 
-    "Sungsang": `<b>Wuku SUNGSANG: MALIHAN</b><br><br>
+    "Sungsang": `<b>Wuku SUNGSANG: MALIHAN</b><br>
+        <i>(Hari peralihan: Tidak disarankan untuk urusan sakral karena dipercaya dapat menguras energi keberuntungan dan harta benda).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Gana.<br>
         • Pohon: Tangan (Tidak mau menganggur).<br>
@@ -110,7 +120,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari nafkah, pindah tempat, berbesanan.<br>
         • Tidak baik untuk: Memanjat, menebang kayu, berperang.`,
 
-    "Galungan": `<b>Wuku GALUNGAN: SONYA</b><br><br>
+    "Galungan": `<b>Wuku GALUNGAN: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Kamajaya (Pecinta & Setia).<br>
         • Burung: Bidho (Hati keras, ingin milik orang lain).<br>
@@ -120,7 +131,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Tirakat, mengunjungi kerabat, menuntut ilmu.<br>
         • Tidak baik untuk: Menanam bambu, menikah, mendirikan rumah.`,
 
-    "Kuningan": `<b>Wuku KUNINGAN: NYAWA</b><br><br>
+    "Kuningan": `<b>Wuku KUNINGAN: NYAWA</b><br>
+        <i>(Hari yang merupakan pantangan utama: Sangat krusial untuk dihindari demi menjaga keselamatan dan ketentraman hidup).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Indra.<br>
         • Pohon: Wijayakusuma (Rupawan).<br>
@@ -131,7 +143,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menjalin persaudaraan, mencari nafkah, menolong orang.<br>
         • Tidak baik untuk: Menanam, menikahkan anak.`,
 
-    "Langkir": `<b>Wuku LANGKIR: RINGKEL</b><br><br>
+    "Langkir": `<b>Wuku LANGKIR: RINGKEL</b><br>
+        <i>(Hari yang sebaiknya dihindari karena berisiko memicu ketidakharmonisan dan perselisihan yang berkelanjutan).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Kala.<br>
         • Pohon: Cemara & Ingas (Panas, tidak bisa jadi pelindung).<br>
@@ -142,7 +155,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menanam, bepergian, mewarangi senjata.<br>
         • Tidak baik untuk: Berkhianat, bertengkar.`,
 
-    "Mandasiya": `<b>Wuku MANDASIYA: SONYA</b><br><br>
+    "Mandasiya": `<b>Wuku MANDASIYA: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Brama.<br>
         • Burung: Platuk Bawang (Tenaga kuat).<br>
@@ -152,7 +166,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Persahabatan, mengobati penyakit, mantu.<br>
         • Tidak baik untuk: Bepergian jauh, membuat sumur.`,
 
-    "Julungpujut": `<b>Wuku JULUNGPUJUT: DONYA</b><br><br>
+    "Julungpujut": `<b>Wuku JULUNGPUJUT: DONYA</b><br>
+        <i>(Hari yang bersifat fluktuatif antara baik dan buruk; sebaiknya tidak digunakan untuk urusan sakral karena berisiko mendatangkan kerugian materiil).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Guritno.<br>
         • Pohon: Rembuyut (Penampilan baik).<br>
@@ -163,7 +178,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari nafkah, pelihara hewan, menanam buah.<br>
         • Tidak baik untuk: Merencanakan pergi mencari syarat.`,
 
-    "Pahang": `<b>Wuku PAHANG: MALIHAN</b><br><br>
+    "Pahang": `<b>Wuku PAHANG: MALIHAN</b><br>
+        <i>(Hari peralihan: Tidak disarankan untuk urusan sakral karena dipercaya dapat menguras energi keberuntungan dan harta benda).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Tantra.<br>
         • Burung: Cocak (Pandai bicara).<br>
@@ -173,7 +189,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mengobati penyakit, menanam, menikah.<br>
         • Tidak baik untuk: Bepergian jauh, mencari nafkah.`,
 
-    "Kuruwelut": `<b>Wuku KURUWELUT: SONYA</b><br><br>
+    "Kuruwelut": `<b>Wuku KURUWELUT: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Wisnu.<br>
         • Pohon: Parijatha (Cekatan tapi nakal).<br>
@@ -184,7 +201,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Melihat calon mantu, rencana bangun rumah.<br>
         • Tidak baik untuk: Mengobati penyakit, menanam jagung.`,
 
-    "Marakeh": `<b>Wuku MARAKEH: SONYA</b><br><br>
+    "Marakeh": `<b>Wuku MARAKEH: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Surenggana.<br>
         • Pohon: Trengguli (Tidak bisa jauh, jadi pusat perhatian).<br>
@@ -194,7 +212,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menanam padi, pasang tumbal, memperbaiki rumah.<br>
         • Tidak baik untuk: Bekerja sambilan, berkasih-kasihan, pindah tempat.`,
 
-    "Tambir": `<b>Wuku Tambir: NYAWA</b><br><br>
+    "Tambir": `<b>Wuku Tambir: NYAWA</b><br>
+        <i>(Hari yang merupakan pantangan utama: Sangat krusial untuk dihindari demi menjaga keselamatan dan ketentraman hidup).</i><br><br>
         Hari Naas: Selasa (Anggara Kasih)<br>
         • Dewa Bumi: Bethara Siwah (Baik di lahir, pamrih di batin).<br>
         • Pohon: Upas (Tidak bisa jadi pelindung).<br>
@@ -205,7 +224,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari nafkah, menanam buah, berguru ilmu kebatinan, berperang.<br>
         • Tidak baik untuk: Menghindari bepergian ke arah Barat Daya.`,
 
-    "Medangkungan": `<b>Wuku MEDANGKUNGAN: SONYA</b><br><br>
+    "Medangkungan": `<b>Wuku MEDANGKUNGAN: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Basuki.<br>
         • Pohon: Plasa (Terkenal).<br>
@@ -216,7 +236,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menikah, mendirikan rumah, mencari solusi (srana).<br>
         • Tidak baik untuk: Bertengkar dan berkhianat.`,
 
-    "Maktal": `<b>Wuku Maktal: DONYA</b><br><br>
+    "Maktal": `<b>Wuku Maktal: DONYA</b><br>
+        <i>(Hari yang bersifat fluktuatif antara baik dan buruk; sebaiknya tidak digunakan untuk urusan sakral karena berisiko mendatangkan kerugian materiil).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Sakri.<br>
         • Pohon: Nagasari & Burung Ayam Alas (Banyak simpati, pandai berbakti).<br>
@@ -226,7 +247,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menikahkan, mengundang kerabat, memperbaiki barang.<br>
         • Tidak baik untuk: Bepergian jauh, pindah rumah, meminjamkan uang.`,
 
-    "Wuye": `<b>Wuku Wuye: MALIHAN</b><br><br>
+    "Wuye": `<b>Wuku Wuye: MALIHAN</b><br>
+        <i>(Hari peralihan: Tidak disarankan untuk urusan sakral karena dipercaya dapat menguras energi keberuntungan dan harta benda).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Kuwera.<br>
         • Pohon: Tal (Panjang umur). Burung: Gogik (Ambisius).<br>
@@ -236,7 +258,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Menangkap burung, menjalin persaudaraan, mencari rejeki.<br>
         • Tidak baik untuk: Pergi jauh dan menipu.`,
 
-    "Manahil": `<b>Wuku MANAIL: SONYA</b><br><br>
+    "Manahil": `<b>Wuku MANAIL: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Pohon: Tigaron (Pemalas). Burung: Sepahan (Baik nafkahnya).<br>
         • Sifat: Tajam intuisi batin, emosi dingin, pencemburu.<br>
@@ -245,7 +268,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari obat, buat bendungan, selesaikan pertengkaran.<br>
         • Tidak baik untuk: Menikahkan anak (mantu), menjatuhkan biji.`,
 
-    "Prangbakat": `<b>Wuku PRANGBAKAT: NYAWA</b><br><br>
+    "Prangbakat": `<b>Wuku PRANGBAKAT: NYAWA</b><br>
+        <i>(Hari yang merupakan pantangan utama: Sangat krusial untuk dihindari demi menjaga keselamatan dan ketentraman hidup).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Bisma.<br>
         • Pohon: Tirisan (Panjang umur, sombong). Burung: Urang-urangan (Cekatan).<br>
@@ -255,7 +279,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mencari nafkah sambilan, perdagangan, menjatuhkan hukuman.<br>
         • Tidak baik untuk: Bepergian, mengobati penyakit.`,
 
-    "Bala": `<b>Wuku BALA: RINGKEL</b><br><br>
+    "Bala": `<b>Wuku BALA: RINGKEL</b><br>
+        <i>(Hari yang sebaiknya dihindari karena berisiko memicu ketidakharmonisan dan perselisihan yang berkelanjutan).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethari Durga (Tidak punya rasa takut).<br>
         • Pohon: Cemara (Suka menyombongkan kedudukan).<br>
@@ -265,7 +290,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mengunjungi teman, menjadi utusan/perantara.<br>
         • Tidak baik untuk: Mengajarkan ilmu kebatinan, memperbaiki barang.`,
 
-    "Wugu": `<b>Wuku WUGU: SONYA</b><br><br>
+    "Wugu": `<b>Wuku WUGU: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Singajanma.<br>
         • Pohon: Wuni (Dicemburui soal rejeki). Burung: Kepodhang (Menyendiri).<br>
@@ -275,7 +301,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Memperbaiki rumah, mantu, mencari rejeki, tanam ubi.<br>
         • Tidak baik untuk: Membangun pertemanan baru.`,
 
-    "Wayang": `<b>Wuku WAYANG: SONYA</b><br><br>
+    "Wayang": `<b>Wuku WAYANG: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethari Sri (Rupawan dan berkecukupan).<br>
         • Pohon: Cempaka (Berwibawa). Burung: Ayam Alas (Disenangi pejabat).<br>
@@ -285,7 +312,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Belajar kesenian, meditasi, berderma.<br>
         • Tidak baik untuk: Memulai peperangan atau perselisihan.`,
 
-    "Kulawu": `<b>Wuku KULAWU: MALIHAN</b><br><br>
+    "Kulawu": `<b>Wuku KULAWU: MALIHAN</b><br>
+        <i>(Hari peralihan: Tidak disarankan untuk urusan sakral karena dipercaya dapat menguras energi keberuntungan dan harta benda).</i><br><br>
         Hari Naas: Senin, Kamis<br>
         • Dewa Bumi: Bethara Sadana.<br>
         • Pohon: Tal (Panjang umurnya).<br>
@@ -296,7 +324,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Mengobati orang sakit, menikah/wayuh (poligami), berteman.<br>
         • Tidak baik untuk: Bepergian jauh, pindah tempat, membuka hutan.`,
 
-    "Dukut": `<b>Wuku DUKUT: SONYA</b><br><br>
+    "Dukut": `<b>Wuku DUKUT: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Rabu, Sabtu, Minggu<br>
         • Dewa Bumi: Bethara Sakri.<br>
         • Pohon: Pandan (Tempatnya terpinggirkan/tersisihkan).<br>
@@ -307,7 +336,8 @@ window.DATA_WUKU = window.DATA_WUKU || {
         • Baik untuk: Memperbaiki rumah, membuka kebun, mencari jodoh, membuat obat.<br>
         • Tidak baik untuk: Menghindari bepergian ke arah Barat Daya.`,
 
-    "Watugunung": `<b>Wuku WATUGUNUNG: SONYA</b><br><br>
+    "Watugunung": `<b>Wuku WATUGUNUNG: SONYA</b><br>
+        <i>(Hari Merdeka: Energi alam bersifat netral dan terbuka, sehingga bebas digunakan untuk berbagai keperluan tanpa hambatan tertentu).</i><br><br>
         Hari Naas: Selasa, Jumat<br>
         • Dewa Bumi: Bethara Anataboga.<br>
         • Pohon: Wijaya Kusuma (Hidup sebagai pendeta).<br>

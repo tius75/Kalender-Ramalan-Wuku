@@ -1,7 +1,25 @@
 /**
  * KALENDER JAWA MODERN - VERSI FINAL FIX 2026
- * Update: Windu Sancaya, Tahun Jawa (Filosofi), & Konzili
+ * Dengan PWA Support dan Fitur Cari Tanggal
  */
+
+// PWA Detection and Setup
+console.log('Kalender Jawa PWA v2.0 dengan Fitur Cari Tanggal');
+
+// Check if running in standalone mode
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    console.log('Running as PWA');
+    // Add standalone specific features
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            // App came to foreground
+            console.log('App resumed');
+        }
+    });
+}
+
+// Network status
+let isOnline = navigator.onLine;
 
 // ==========================================
 // SISTEM TOKEN - VERSI TUNGGAL
@@ -80,13 +98,63 @@ const NASIB_AHLI_WARIS = {
     0: { nama: "Asat", arti: "Kesulitan dalam mendapatkan rezeki." }
 };
 
-const PEMBAGI_5 = { 
-    1: { nama: "Sri", arti: "Murah rezeki dan hidup makmur." },
-    2: { nama: "Lungguh", arti: "Mendapatkan kedudukan atau pangkat tinggi." },
-    3: { nama: "Gendhong", arti: "Mapan secara lahiriah dan dihargai orang." },
-    4: { nama: "Loro", arti: "Sering menghadapi rintangan kesehatan/hidup." },
-    0: { nama: "Pati", arti: "Banyak hambatan, perlu kehati-hatian dalam melangkah." }
-};
+const PEMBAGI_5 = {
+    1: { 
+        nama: "Sri", 
+        arti: "Murah rezeki dan hidup makmur.",
+        aktivitas_baik: [
+            "Memulai usaha dagang atau bisnis baru",
+            "Menanam tanaman pangan (padi, palawija)",
+            "Menyimpan uang atau investasi",
+            "Membuka toko atau tempat usaha"
+        ],
+        saran: "Sangat baik untuk urusan finansial dan kelimpahan materi."
+    },
+    2: { 
+        nama: "Lungguh", 
+        arti: "Mendapatkan kedudukan, pangkat, atau kehormatan.",
+        aktivitas_baik: [
+            "Melamar pekerjaan atau kenaikan jabatan",
+            "Pelantikan pengurus atau organisasi",
+            "Pindah rumah baru",
+            "Membangun pondasi rumah"
+        ],
+        saran: "Fokus pada pengembangan karier dan status sosial."
+    },
+    3: { 
+        nama: "Gendhong", 
+        arti: "Mapan secara lahiriah dan sangat dihargai masyarakat.",
+        aktivitas_baik: [
+            "Mengadakan pesta pernikahan",
+            "Membeli kendaraan atau aset besar",
+            "Menerima tamu penting",
+            "Menjalin kerjasama (MoU) dengan pihak luar"
+        ],
+        saran: "Waktu yang tepat untuk memperkuat hubungan sosial dan aset."
+    },
+    4: { 
+        nama: "Loro", 
+        arti: "Sering menghadapi rintangan kesehatan atau ujian hidup.",
+        aktivitas_baik: [
+            "Berdoa dan meditasi (pendekatan diri pada Tuhan)",
+            "Pengobatan atau cek kesehatan",
+            "Membersihkan rumah (ruwat lingkungan)",
+            "Bersedekah untuk menolak bala"
+        ],
+        saran: "Hindari memulai proyek besar; fokus pada pemulihan dan ketenangan."
+    },
+    0: { 
+        nama: "Pati", 
+        arti: "Banyak hambatan berat, perlu kehati-hatian ekstra.",
+        aktivitas_baik: [
+            "Introspeksi diri dan perencanaan matang",
+            "Menyelesaikan hutang-piutang",
+            "Kegiatan spiritual/keagamaan",
+            "Puasa atau tirakat"
+        ],
+        saran: "Sangat disarankan untuk menunda keputusan krusial atau hajatan besar."
+    }
+    };
 
 const DATA_BULAN_JAWA = [
     { nama: "Sura", status: "Tidak Baik", naas: [6, 11, 13, 14, 17, 18, 27], taliWangke: "Rabu Pahing" },
@@ -137,7 +205,7 @@ const DATA_SIKLUS_TAHUN = [
     { 
         nama: "Wawu", 
         makna: "Marang (Arah/Tujuan)", 
-        deskripsi: "Melambangkan fokus. Menjelang akhir siklus, manusia diingatkan untuk kembali fokus pada tujuan akhir hidup agar tidak tersesat. Tahun Wawu adalah tahun penentuan arah dan prioritas hidup." 
+        deskripsi: "Melambangkan fokus. Menjelang akhir siklus, manusia diingatkan untuk kembali focus pada tujuan akhir hidup agar tidak tersesat. Tahun Wawu adalah tahun penentuan arah dan prioritas hidup." 
     },
     { 
         nama: "Jimakir", 
@@ -153,6 +221,86 @@ const WINDU_LIST = ["Kuntara", "Sangara", "Sancaya", "Adi"];
 // ==========================================
 
 const DB_IMLEK = {
+     1940: { m: 2, d: 8, shio: "Naga" },
+  1941: { m: 1, d: 27, shio: "Ular" },
+  1942: { m: 2, d: 15, shio: "Kuda" },
+  1943: { m: 2, d: 5, shio: "Kambing" },
+  1944: { m: 1, d: 25, shio: "Monyet" },
+  1945: { m: 2, d: 13, shio: "Ayam" },
+  1946: { m: 2, d: 2, shio: "Anjing" },
+  1947: { m: 1, d: 22, shio: "Babi" },
+  1948: { m: 2, d: 10, shio: "Tikus" },
+  1949: { m: 1, d: 29, shio: "Kerbau" },
+  1950: { m: 2, d: 17, shio: "Macan" },
+  1951: { m: 2, d: 6, shio: "Kelinci" },
+  1952: { m: 1, d: 27, shio: "Naga" },
+  1953: { m: 2, d: 14, shio: "Ular" },
+  1954: { m: 2, d: 3, shio: "Kuda" },
+  1955: { m: 1, d: 24, shio: "Kambing" },
+  1956: { m: 2, d: 12, shio: "Monyet" },
+  1957: { m: 1, d: 31, shio: "Ayam" },
+  1958: { m: 2, d: 18, shio: "Anjing" },
+  1959: { m: 2, d: 8, shio: "Babi" },
+  1960: { m: 1, d: 28, shio: "Tikus" },
+  1961: { m: 2, d: 15, shio: "Kerbau" },
+  1962: { m: 2, d: 5, shio: "Macan" },
+  1963: { m: 1, d: 25, shio: "Kelinci" },
+  1964: { m: 2, d: 13, shio: "Naga" },
+  1965: { m: 2, d: 2, shio: "Ular" },
+  1966: { m: 1, d: 21, shio: "Kuda" },
+  1967: { m: 2, d: 9, shio: "Kambing" },
+  1968: { m: 1, d: 30, shio: "Monyet" },
+  1969: { m: 2, d: 17, shio: "Ayam" },
+  1970: { m: 2, d: 6, shio: "Anjing" },
+  1971: { m: 1, d: 27, shio: "Babi" },
+  1972: { m: 2, d: 15, shio: "Tikus" },
+  1973: { m: 2, d: 3, shio: "Kerbau" },
+  1974: { m: 1, d: 23, shio: "Macan" },
+  1975: { m: 2, d: 11, shio: "Kelinci" },
+  1976: { m: 1, d: 31, shio: "Naga" },
+  1977: { m: 2, d: 18, shio: "Ular" },
+  1978: { m: 2, d: 7, shio: "Kuda" },
+  1979: { m: 1, d: 28, shio: "Kambing" },
+  1980: { m: 2, d: 16, shio: "Monyet" },
+  1981: { m: 2, d: 5, shio: "Ayam" },
+  1982: { m: 1, d: 25, shio: "Anjing" },
+  1983: { m: 2, d: 13, shio: "Babi" },
+  1984: { m: 2, d: 2, shio: "Tikus" },
+  1985: { m: 2, d: 20, shio: "Kerbau" },
+  1986: { m: 2, d: 9, shio: "Macan" },
+  1987: { m: 1, d: 29, shio: "Kelinci" },
+  1988: { m: 2, d: 17, shio: "Naga" },
+  1989: { m: 2, d: 6, shio: "Ular" },
+  1990: { m: 1, d: 27, shio: "Kuda" },
+  1991: { m: 2, d: 15, shio: "Kambing" },
+  1992: { m: 2, d: 4, shio: "Monyet" },
+  1993: { m: 1, d: 23, shio: "Ayam" },
+  1994: { m: 2, d: 10, shio: "Anjing" },
+  1995: { m: 1, d: 31, shio: "Babi" },
+  1996: { m: 2, d: 19, shio: "Tikus" },
+  1997: { m: 2, d: 7, shio: "Kerbau" },
+  1998: { m: 1, d: 28, shio: "Macan" },
+  1999: { m: 2, d: 16, shio: "Kelinci" },
+  2000: { m: 2, d: 5, shio: "Naga" },
+  2001: { m: 1, d: 24, shio: "Ular" },
+  2002: { m: 2, d: 12, shio: "Kuda" },
+  2003: { m: 2, d: 1, shio: "Kambing" },
+  2004: { m: 1, d: 22, shio: "Monyet" },
+  2005: { m: 2, d: 9, shio: "Ayam" },
+  2006: { m: 1, d: 29, shio: "Anjing" },
+  2007: { m: 2, d: 18, shio: "Babi" },
+  2008: { m: 2, d: 7, shio: "Tikus" },
+  2009: { m: 1, d: 26, shio: "Kerbau" },
+  2010: { m: 2, d: 14, shio: "Macan" },
+  2011: { m: 2, d: 3, shio: "Kelinci" },
+  2012: { m: 1, d: 23, shio: "Naga" },
+  2013: { m: 2, d: 10, shio: "Ular" },
+  2014: { m: 1, d: 31, shio: "Kuda" },
+  2015: { m: 2, d: 19, shio: "Kambing" },
+  2016: { m: 2, d: 8, shio: "Monyet" },
+  2017: { m: 1, d: 28, shio: "Ayam" },
+  2018: { m: 2, d: 16, shio: "Anjing" },
+  2019: { m: 2, d: 5, shio: "Babi" },
     2020: { m: 1, d: 25, shio: "Tikus" },
     2021: { m: 2, d: 12, shio: "Kerbau" },
     2022: { m: 2, d: 1, shio: "Macan" },
@@ -264,39 +412,10 @@ const DATA_WATAK_NEPTU = {
     }
 };
 
-// DATA WUKU LENGKAP (30 Wuku)
-const DATA_WUKU = {
-    "Sinta": "Wuku Sinta memiliki sifat baik untuk memulai pekerjaan baru, memulai usaha, dan memulai hubungan. Orang yang lahir di wuku ini cocok untuk menjadi pemimpin karena memiliki jiwa kepemimpinan yang kuat. Namun perlu berhati-hati dalam mengambil keputusan besar.",
-    "Landep": "Wuku Landep cocok untuk aktivitas yang membutuhkan ketajaman pikiran seperti belajar, meneliti, atau memecahkan masalah. Orang wuku Landep biasanya cerdas dan analitis. Cocok untuk profesi di bidang hukum, pendidikan, atau teknologi.",
-    "Wukir": "Wuku Wukir baik untuk kegiatan fisik dan pekerjaan tangan. Cocok untuk bidang konstruksi, pertanian, atau olahraga. Orang wuku ini biasanya kuat fisiknya dan tahan banting.",
-    "Kurantil": "Wuku Kurantil cocok untuk pendidikan dan belajar. Baik untuk memulai studi baru atau mengembangkan keterampilan. Orang wuku ini biasanya pandai bergaul dan komunikatif.",
-    "Tolu": "Wuku Tolu baik untuk aktivitas sosial dan kemasyarakatan. Cocok untuk organisasi sosial atau kegiatan gotong royong. Orang wuku ini biasanya ramah dan disukai banyak orang.",
-    "Gumbreg": "Wuku Gumbreg cocok untuk kegiatan yang membutuhkan ketelitian seperti akuntansi atau administrasi. Orang wuku ini biasanya teratur dan disiplin.",
-    "Warigalit": "Wuku Warigalit baik untuk kegiatan spiritual dan meditasi. Cocok untuk retreat atau pencarian jati diri. Orang wuku ini biasanya memiliki sisi spiritual yang kuat.",
-    "Wariagung": "Wuku Wariagung cocok untuk acara besar dan perayaan. Baik untuk pernikahan, khitanan, atau hajatan lainnya. Orang wuku ini biasanya suka merayakan sesuatu.",
-    "Julungwangi": "Wuku Julungwangi baik untuk seni dan kreativitas. Cocok untuk melukis, menulis, atau bermusik. Orang wuku ini biasanya artistik dan imajinatif.",
-    "Sungsang": "Wuku Sungsang cocok untuk perubahan dan transformasi. Baik untuk pindah rumah, ganti pekerjaan, atau memulai babak baru. Orang wuku ini biasanya mudah beradaptasi.",
-    "Galungan": "Wuku Galungan baik untuk kegiatan keagamaan dan ritual. Cocok untuk upacara adat atau kegiatan spiritual. Orang wuku ini biasanya religius.",
-    "Kuningan": "Wuku Kuningan cocok untuk refleksi dan evaluasi. Baik untuk mengevaluasi hasil kerja atau introspeksi diri. Orang wuku ini biasanya bijaksana.",
-    "Langkir": "Wuku Langkir baik untuk petualangan dan eksplorasi. Cocok untuk traveling atau mencoba hal baru. Orang wuku ini biasanya berani mengambil risiko.",
-    "Mandasiya": "Wuku Mandasiya cocok untuk penyembuhan dan kesehatan. Baik untuk memulai pola hidup sehat atau pengobatan. Orang wuku ini biasanya peduli kesehatan.",
-    "Julungpujut": "Wuku Julungpujut baik untuk pendidikan tinggi dan penelitian. Cocok untuk S2/S3 atau penelitian ilmiah. Orang wuku ini biasanya akademis.",
-    "Pahang": "Wuku Pahang cocok untuk bisnis dan perdagangan. Baik untuk memulai usaha dagang atau investasi. Orang wuku ini biasanya jeli melihat peluang.",
-    "Kuruwelut": "Wuku Kuruwelut baik untuk kerajinan tangan dan keterampilan. Cocok untuk membuat kerajinan atau reparasi. Orang wuku ini biasanya kreatif.",
-    "Marakeh": "Wuku Marakeh cocok untuk pertanian dan perkebunan. Baik untuk bercocok tanam atau beternak. Orang wuku ini biasanya dekat dengan alam.",
-    "Tambir": "Wuku Tambir baik untuk komunikasi dan negosiasi. Cocok untuk marketing, sales, atau diplomat. Orang wuku ini biasanya persuasif.",
-    "Medangkungan": "Wuku Medangkungan cocok untuk olahraga dan kompetisi. Baik untuk turnamen atau lomba. Orang wuku ini biasanya kompetitif.",
-    "Maktal": "Wuku Maktal baik untuk planning dan strategi. Cocok untuk manajemen proyek atau perencanaan bisnis. Orang wuku ini biasanya visioner.",
-    "Wuye": "Wuku Wuye cocok untuk keluarga dan rumah tangga. Baik untuk memperkuat hubungan keluarga atau membangun rumah. Orang wuku ini biasanya family-oriented.",
-    "Manahil": "Wuku Manahil baik untuk spiritualitas dan meditasi. Cocok untuk yoga atau retreat spiritual. Orang wuku ini biasanya kontemplatif.",
-    "Prangbakat": "Wuku Prangbakat cocok untuk perlindungan dan keamanan. Baik untuk memasang sistem keamanan atau proteksi. Orang wuku ini biasanya protektif.",
-    "Bala": "Wuku Bala baik untuk kekuatan dan daya tahan. Cocok untuk fitness atau latihan fisik. Orang wuku ini biasanya kuat.",
-    "Wugu": "Wuku Wugu cocok untuk kebahagiaan dan kesenangan. Baik untuk rekreasi atau hiburan. Orang wuku ini biasanya optimis.",
-    "Wayang": "Wuku Wayang baik untuk seni pertunjukan. Cocok untuk teater, film, atau pertunjukan. Orang wuku ini biasanya ekspresif.",
-    "Kulawu": "Wuku Kulawu cocok untuk tradisi dan adat. Baik untuk melestarikan budaya atau adat istiadat. Orang wuku ini biasanya tradisional.",
-    "Dukut": "Wuku Dukut baik untuk kedalaman dan misteri. Cocok untuk penelitian sejarah atau arkeologi. Orang wuku ini biasanya penuh misteri.",
-    "Watugunung": "Wuku Watugunung cocok untuk penyelesaian dan akhir. Baik untuk menyelesaikan proyek atau menutup suatu babak. Orang wuku ini biasanya completionist."
-};
+// ==========================================
+// DATA WUKU EKSTERNAL
+// ==========================================
+let DATA_WUKU = {}; // Akan diisi dari file eksternal
 
 // DATA SRI JATI LENGKAP
 const TABEL_SRIJATI = {
@@ -609,21 +728,18 @@ function getTanggalJawa(date) {
 }
 
 function getSiklusBesar(tahunJawa) {
-    if (typeof tahunJawa !== "number" || tahunJawa < 2000 || tahunJawa > 3000) {
-        tahunJawa = 2576;
-    }
-
-    const REF_TAHUN_JAWA = 2576;
-    const REF_TAHUN_IDX = 4; // Dal
+    // Referensi: 1959 AJ (2026 Masehi) adalah Tahun DAL
+    const REF_TAHUN_JAWA = 1959; 
+    const REF_TAHUN_IDX = 4; // Indeks 4 adalah DAL dalam DATA_SIKLUS_TAHUN
     const REF_WINDU_IDX = 2; // Sancaya
 
     const diffYears = tahunJawa - REF_TAHUN_JAWA;
 
     let tahunIdx = (REF_TAHUN_IDX + diffYears) % 8;
-    if (tahunIdx < 0) tahunIdx += 8;
+    while (tahunIdx < 0) tahunIdx += 8;
 
     let winduIdx = (REF_WINDU_IDX + Math.floor(diffYears / 8)) % 4;
-    if (winduIdx < 0) winduIdx += 4;
+    while (winduIdx < 0) winduIdx += 4;
 
     return {
         tahun: DATA_SIKLUS_TAHUN[tahunIdx],
@@ -676,6 +792,43 @@ function hitungUsiaLengkap(birthDate) {
 }
 
 // ==========================================
+// SISTEM LOAD DATA WUKU DARI EKSTERNAL
+// ==========================================
+
+// Fungsi untuk memuat data wuku dari file eksternal
+function loadWukuData() {
+    return new Promise((resolve, reject) => {
+        // Cek apakah data sudah ada di window (jika file sudah dimuat sebelumnya)
+        if (window.DATA_WUKU && Object.keys(window.DATA_WUKU).length > 0) {
+            DATA_WUKU = window.DATA_WUKU;
+            console.log('Data Wuku ditemukan di window.DATA_WUKU');
+            resolve(DATA_WUKU);
+            return;
+        }
+        
+        // Jika belum ada, load file eksternal
+        const script = document.createElement('script');
+        script.src = 'data-wuku.js?v=' + Date.now(); // Cache buster
+        script.onload = function() {
+            if (window.DATA_WUKU) {
+                DATA_WUKU = window.DATA_WUKU;
+                console.log('Data Wuku berhasil dimuat dari file eksternal:', Object.keys(DATA_WUKU).length, 'wuku');
+                resolve(DATA_WUKU);
+            } else {
+                console.error('Data Wuku tidak ditemukan setelah script dimuat');
+                reject(new Error('Data Wuku tidak ditemukan'));
+            }
+        };
+        script.onerror = function() {
+            console.error('Gagal memuat file data-wuku.js');
+            reject(new Error('Gagal memuat file data-wuku.js'));
+        };
+        
+        document.head.appendChild(script);
+    });
+}
+
+// ==========================================
 // MODAL TOKEN YANG DIPERBAIKI
 // ==========================================
 
@@ -715,8 +868,8 @@ function showTokenModal() {
                     <ul style="padding-left: 20px;">
                         <li><strong>💰 1 Bulan</strong> - Rp 25.000</li>
                         <li><strong>💰 3 Bulan</strong> - Rp 60.000 (Hemat Rp 15.000)</li>
-                        <li><strong>💰 1 Tahun</strong> - Rp 150.000 (Hemat Rp 150.000)</li>
-                        <li><strong>👑 Unlimited</strong> - Rp 500.000 (Akses selamanya)</li>
+                        <li><strong>💰 1 Tahun</strong> - Rp 220.000 (Hemat Rp 80.000)</li>
+                       
                     </ul>
                 </div>
                 
@@ -757,14 +910,13 @@ function showTokenModal() {
                 
                 <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 5px solid #ffc107;">
                     <h4 style="margin-top: 0;">📞 Hubungi Admin untuk Token:</h4>
-                    <p>WhatsApp: <a href="https://wa.me/6281234567890?text=Halo%20admin,%20saya%20ingin%20membeli%20token%20Kalender%20Jawa" 
+                    <p>WhatsApp: <a href="https://wa.me/6285117021168?text=Halo%20admin,%20saya%20ingin%20membeli%20token%20Kalender%20Jawa" 
                                    target="_blank" 
                                    style="color: #25D366; font-weight: bold;">
-                        0812-3456-7890
+                        0851-1702-1168
                     </a></p>
                     <p style="font-size: 0.9em; color: #666; margin-bottom: 0;">
-                        Token contoh: <code>DEMO123</code> (berlaku hingga 1 Maret 2026)
-                    </p>
+                        
                 </div>
             </div>
         </div>
@@ -839,7 +991,123 @@ function checkTokenLogic(token) {
 }
 
 // ==========================================
-// RENDER KALENDER
+// FITUR CARI TANGGAL (TAMBAHAN BARU)
+// ==========================================
+
+function initDateSearch() {
+    // Set nilai default input tanggal ke hari ini
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    const searchInput = document.getElementById('dateSearchInput');
+    if (searchInput) {
+        searchInput.value = todayStr;
+        
+        // REVISI: Bulan Desember adalah index 11
+        // Gunakan format YYYY-MM-DD secara manual agar lebih aman dari masalah timezone ISO
+        searchInput.max = "2100-12-31"; 
+        searchInput.min = "1900-01-01";
+    }
+    
+    // Set event listener untuk tombol cari
+    const searchBtn = document.getElementById('searchDateBtn');
+    if (searchBtn) {
+        searchBtn.addEventListener('click', searchDate);
+    }
+    
+    // Set event listener untuk Enter di input
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDate();
+            }
+        });
+    }
+    
+    console.log('Fitur Cari Tanggal telah diinisialisasi hingga tahun 2100');
+}
+
+function searchDate() {
+    const searchInput = document.getElementById('dateSearchInput');
+    if (!searchInput || !searchInput.value) {
+        alert("Silakan pilih tanggal terlebih dahulu!");
+        return;
+    }
+    
+    const selectedDate = new Date(searchInput.value + 'T00:00:00');
+    if (isNaN(selectedDate.getTime())) {
+        alert("Tanggal yang dimasukkan tidak valid!");
+        return;
+    }
+    
+    // Set calendar ke bulan yang dicari
+    current = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    generateCalendar();
+    
+    // Highlight tanggal yang dicari
+    highlightSearchedDate(selectedDate);
+    
+    // Tampilkan detail jika token valid
+    const savedToken = localStorage.getItem('kalender_token_tius');
+    if (savedToken && checkTokenLogic(savedToken)) {
+        updateDetail(selectedDate, getPasaran(selectedDate));
+    } else {
+        showTokenModal();
+    }
+    
+    // Scroll ke detail section
+    const detailSection = document.getElementById('detail');
+    if (detailSection) {
+        detailSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function highlightSearchedDate(date) {
+    // Hapus highlight sebelumnya
+    document.querySelectorAll('.calendar-day').forEach(cell => {
+        cell.classList.remove('searched-date');
+    });
+    
+    // Highlight tanggal yang dicari
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const d = date.getDate();
+    
+    // Cari cell yang sesuai dengan tanggal yang dicari
+    const cells = document.querySelectorAll('.calendar-day');
+    cells.forEach(cell => {
+        const cellDateNum = parseInt(cell.querySelector('.date-num')?.textContent);
+        if (cellDateNum === d && 
+            current.getFullYear() === y && 
+            current.getMonth() === m) {
+            cell.classList.add('searched-date');
+            
+            // Tambahkan indikator visual
+            const indicator = document.createElement('div');
+            indicator.className = 'search-indicator';
+            indicator.innerHTML = '🔍';
+            indicator.style.cssText = `
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                font-size: 10px;
+                background: #D30000;
+                color: white;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            cell.style.position = 'relative';
+            cell.appendChild(indicator);
+        }
+    });
+}
+
+// ==========================================
+// RENDER KALENDER (DIMODIFIKASI UNTUK SUPPORT SEARCH)
 // ==========================================
 
 function generateCalendar() {
@@ -881,6 +1149,13 @@ function generateCalendar() {
             const savedToken = localStorage.getItem('kalender_token_tius');
             
             if (savedToken && checkTokenLogic(savedToken)) {
+                // Update input search dengan tanggal yang dipilih
+                const searchInput = document.getElementById('dateSearchInput');
+                if (searchInput) {
+                    const selectedDateStr = dateObj.toISOString().split('T')[0];
+                    searchInput.value = selectedDateStr;
+                }
+                
                 document.querySelectorAll('.calendar-day').forEach(c => c.classList.remove('selected-day'));
                 cell.classList.add('selected-day');
                 updateDetail(dateObj, p);
@@ -890,13 +1165,24 @@ function generateCalendar() {
         };
         grid.appendChild(cell);
     }
+    
+    // Setelah render, cek apakah ada tanggal yang sedang dicari
+    const searchInput = document.getElementById('dateSearchInput');
+    if (searchInput && searchInput.value) {
+        const searchedDate = new Date(searchInput.value + 'T00:00:00');
+        if (!isNaN(searchedDate.getTime()) && 
+            searchedDate.getFullYear() === y && 
+            searchedDate.getMonth() === m) {
+            setTimeout(() => highlightSearchedDate(searchedDate), 100);
+        }
+    }
 }
 
 // ==========================================
-// UPDATE DETAIL LENGKAP
+// UPDATE DETAIL LENGKAP (TIDAK BERUBAH)
 // ==========================================
 
-function updateDetail(date, pasaran) {
+async function updateDetail(date, pasaran) {
     try {
         const detailDiv = document.getElementById('detail');
         if (!detailDiv) {
@@ -929,7 +1215,25 @@ function updateDetail(date, pasaran) {
         const namaBulanMasehi = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         const tglMasehiLengkap = `${date.getDate()} ${namaBulanMasehi[date.getMonth()]} ${date.getFullYear()}`;
 
-        const teksWuku = DATA_WUKU[wukuName] || "Detail wuku belum tersedia.";
+        // Ambil data wuku dari file eksternal
+        let teksWuku = "Detail wuku sedang dimuat...";
+        try {
+            // Cek apakah data wuku sudah dimuat
+            if (Object.keys(DATA_WUKU).length === 0) {
+                // Jika belum, tunggu sampai dimuat
+                await loadWukuData();
+            }
+            
+            if (DATA_WUKU[wukuName]) {
+                teksWuku = DATA_WUKU[wukuName];
+            } else {
+                teksWuku = `Data untuk wuku ${wukuName} tidak ditemukan.`;
+            }
+        } catch (error) {
+            console.error('Error loading wuku data:', error);
+            teksWuku = `Gagal memuat data wuku ${wukuName}.`;
+        }
+        
         const dataSriJati = TABEL_SRIJATI[neptu] || [];
 
         const isNaas = infoJawa.bulan.naas.includes(infoJawa.tanggal);
@@ -1085,9 +1389,22 @@ function updateDetail(date, pasaran) {
                 
                 <!-- Nasib Pembagi 5 -->
                 <div style="background:#e8f5e9; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #c8e6c9;">
-                    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">💎 Nasib Pembagi 5: ${nasib5.nama}</h3>
-                    <p style="font-size:0.95rem; line-height:1.6; margin:10px 0 0;">${nasib5.arti}</p>
-                </div>
+    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">
+        💎 Nasib Hidup: ${nasib5.nama}
+    </h3>
+    
+    <p style="font-weight:bold; margin-bottom:5px; color:#1b5e20;">Makna:</p>
+    <p style="font-size:0.95rem; line-height:1.6; margin:0 0 15px;">${nasib5.arti}</p>
+
+    <p style="font-weight:bold; margin-bottom:5px; color:#1b5e20;">Aktivitas yang Disarankan:</p>
+    <ul style="font-size:0.9rem; line-height:1.5; margin:0 0 15px; padding-left:20px;">
+        ${nasib5.aktivitas_baik.map(item => `<li>${item}</li>`).join('')}
+    </ul>
+
+    <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:5px; border-left:4px solid #2e7d32;">
+        <p style="font-size:0.9rem; font-style:italic; margin:0;"><strong>Saran:</strong> ${nasib5.saran}</p>
+    </div>
+</div>
                 
                 <!-- Nasib Kematian -->
                 <div style="background:#fffcf0; padding:20px; border-radius:10px; margin-bottom:20px; border-left:4px solid #f1c40f;">
@@ -1107,14 +1424,14 @@ function updateDetail(date, pasaran) {
                 <!-- Analisis Wuku -->
                 <div style="margin-bottom:20px; padding:20px; border:1px solid #d1c4e9; border-radius:10px; background:#f5f2ff;">
                     <h3 style="color:#5e35b1; margin-top:0; border-bottom:2px solid #b39ddb; padding-bottom:8px;">🛡️ Analisis Wuku ${wukuName}</h3>
-                    <p style="font-size:0.95rem; line-height:1.6; margin:10px 0 0;">${teksWuku}</p>
+                    <div style="font-size:0.95rem; line-height:1.6; margin:10px 0 0;">${teksWuku}</div>
                 </div>
                 
                 <!-- Siklus Sri Jati -->
                 <div style="margin-bottom:10px;">
                     <h3 style="color:#D30000; margin-top:0; border-bottom:2px solid #ffcccc; padding-bottom:8px;">📈 Siklus Sri Jati (Rejeki & Nasib)</h3>
                     <p style="font-size:0.9rem; color:#666; margin-bottom:15px;">Berikut adalah perjalanan rejeki dan nasib berdasarkan neptu ${neptu}:</p>
-                    ${dataSriJati.length > 0 ? tabelHtml : "<p style='color:#999; padding:20px; text-align:center; background:#f9f9f9; border-radius:8px;'>Data siklus Sri Jati untuk neptu ${neptu} tidak tersedia</p>"}
+                    ${dataSriJati.length > 0 ? tabelHtml : `<p style='color:#999; padding:20px; text-align:center; background:#f9f9f9; border-radius:8px;'>Data siklus Sri Jati untuk neptu ${neptu} tidak tersedia</p>`}
                 </div>
                 
                 <!-- Deskripsi Siklus Tahun -->
@@ -1145,7 +1462,7 @@ function updateDetail(date, pasaran) {
 }
 
 // ==========================================
-// FITUR SALIN & SHARE
+// FITUR SALIN & SHARE (TIDAK BERUBAH)
 // ==========================================
 
 function copyToClipboard() {
@@ -1194,7 +1511,7 @@ function shareWhatsApp() {
 }
 
 // ==========================================
-// FUNGSI CARI WETON
+// FUNGSI CARI WETON (LAMA)
 // ==========================================
 
 function searchWeton() {
@@ -1218,12 +1535,24 @@ function searchWeton() {
 }
 
 // ==========================================
-// INITIAL START
+// INITIAL START (DIMODIFIKASI)
 // ==========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    // Preload data wuku di background
+    loadWukuData().then(() => {
+        console.log('Data Wuku siap digunakan');
+    }).catch(error => {
+        console.error('Gagal memuat data wuku:', error);
+    });
+    
+    // Inisialisasi kalender
     generateCalendar();
     
+    // Inisialisasi fitur cari tanggal
+    initDateSearch();
+    
+    // Tampilkan detail untuk hari ini jika token valid
     const savedToken = localStorage.getItem('kalender_token_tius');
     if (savedToken && checkTokenLogic(savedToken)) {
         updateDetail(TODAY, getPasaran(TODAY));
@@ -1267,3 +1596,8 @@ document.addEventListener("DOMContentLoaded", () => {
         generateCalendar(); 
     };
 });
+
+
+
+
+

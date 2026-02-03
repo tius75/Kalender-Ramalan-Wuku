@@ -98,13 +98,63 @@ const NASIB_AHLI_WARIS = {
     0: { nama: "Asat", arti: "Kesulitan dalam mendapatkan rezeki." }
 };
 
-const PEMBAGI_5 = { 
-    1: { nama: "Sri", arti: "Murah rezeki dan hidup makmur." },
-    2: { nama: "Lungguh", arti: "Mendapatkan kedudukan atau pangkat tinggi." },
-    3: { nama: "Gendhong", arti: "Mapan secara lahiriah dan dihargai orang." },
-    4: { nama: "Loro", arti: "Sering menghadapi rintangan kesehatan/hidup." },
-    0: { nama: "Pati", arti: "Banyak hambatan, perlu kehati-hatian dalam melangkah." }
-};
+const PEMBAGI_5 = {
+    1: { 
+        nama: "Sri", 
+        arti: "Murah rezeki dan hidup makmur.",
+        aktivitas_baik: [
+            "Memulai usaha dagang atau bisnis baru",
+            "Menanam tanaman pangan (padi, palawija)",
+            "Menyimpan uang atau investasi",
+            "Membuka toko atau tempat usaha"
+        ],
+        saran: "Sangat baik untuk urusan finansial dan kelimpahan materi."
+    },
+    2: { 
+        nama: "Lungguh", 
+        arti: "Mendapatkan kedudukan, pangkat, atau kehormatan.",
+        aktivitas_baik: [
+            "Melamar pekerjaan atau kenaikan jabatan",
+            "Pelantikan pengurus atau organisasi",
+            "Pindah rumah baru",
+            "Membangun pondasi rumah"
+        ],
+        saran: "Fokus pada pengembangan karier dan status sosial."
+    },
+    3: { 
+        nama: "Gendhong", 
+        arti: "Mapan secara lahiriah dan sangat dihargai masyarakat.",
+        aktivitas_baik: [
+            "Mengadakan pesta pernikahan",
+            "Membeli kendaraan atau aset besar",
+            "Menerima tamu penting",
+            "Menjalin kerjasama (MoU) dengan pihak luar"
+        ],
+        saran: "Waktu yang tepat untuk memperkuat hubungan sosial dan aset."
+    },
+    4: { 
+        nama: "Loro", 
+        arti: "Sering menghadapi rintangan kesehatan atau ujian hidup.",
+        aktivitas_baik: [
+            "Berdoa dan meditasi (pendekatan diri pada Tuhan)",
+            "Pengobatan atau cek kesehatan",
+            "Membersihkan rumah (ruwat lingkungan)",
+            "Bersedekah untuk menolak bala"
+        ],
+        saran: "Hindari memulai proyek besar; fokus pada pemulihan dan ketenangan."
+    },
+    0: { 
+        nama: "Pati", 
+        arti: "Banyak hambatan berat, perlu kehati-hatian ekstra.",
+        aktivitas_baik: [
+            "Introspeksi diri dan perencanaan matang",
+            "Menyelesaikan hutang-piutang",
+            "Kegiatan spiritual/keagamaan",
+            "Puasa atau tirakat"
+        ],
+        saran: "Sangat disarankan untuk menunda keputusan krusial atau hajatan besar."
+    }
+    };
 
 const DATA_BULAN_JAWA = [
     { nama: "Sura", status: "Tidak Baik", naas: [6, 11, 13, 14, 17, 18, 27], taliWangke: "Rabu Pahing" },
@@ -1339,9 +1389,22 @@ async function updateDetail(date, pasaran) {
                 
                 <!-- Nasib Pembagi 5 -->
                 <div style="background:#e8f5e9; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #c8e6c9;">
-                    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">💎 Nasib Hidup: ${nasib5.nama}</h3>
-                    <p style="font-size:0.95rem; line-height:1.6; margin:10px 0 0;">${nasib5.arti}</p>
-                </div>
+    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">
+        💎 Nasib Hidup: ${nasib5.nama}
+    </h3>
+    
+    <p style="font-weight:bold; margin-bottom:5px; color:#1b5e20;">Makna:</p>
+    <p style="font-size:0.95rem; line-height:1.6; margin:0 0 15px;">${nasib5.arti}</p>
+
+    <p style="font-weight:bold; margin-bottom:5px; color:#1b5e20;">Aktivitas yang Disarankan:</p>
+    <ul style="font-size:0.9rem; line-height:1.5; margin:0 0 15px; padding-left:20px;">
+        ${nasib5.aktivitas_baik.map(item => `<li>${item}</li>`).join('')}
+    </ul>
+
+    <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:5px; border-left:4px solid #2e7d32;">
+        <p style="font-size:0.9rem; font-style:italic; margin:0;"><strong>Saran:</strong> ${nasib5.saran}</p>
+    </div>
+</div>
                 
                 <!-- Nasib Kematian -->
                 <div style="background:#fffcf0; padding:20px; border-radius:10px; margin-bottom:20px; border-left:4px solid #f1c40f;">
@@ -1533,3 +1596,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         generateCalendar(); 
     };
 });
+
+
+
+
+
