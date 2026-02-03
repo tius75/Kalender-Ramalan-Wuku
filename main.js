@@ -1339,7 +1339,7 @@ async function updateDetail(date, pasaran) {
                 
                 <!-- Nasib Pembagi 5 -->
                 <div style="background:#e8f5e9; padding:20px; border-radius:10px; margin-bottom:20px; border:1px solid #c8e6c9;">
-                    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">💎 Nasib Pembagi 5: ${nasib5.nama}</h3>
+                    <h3 style="color:#2e7d32; margin-top:0; border-bottom:2px solid #a5d6a7; padding-bottom:8px;">💎 Nasib Hidup: ${nasib5.nama}</h3>
                     <p style="font-size:0.95rem; line-height:1.6; margin:10px 0 0;">${nasib5.arti}</p>
                 </div>
                 
